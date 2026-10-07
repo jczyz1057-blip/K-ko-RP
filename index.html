@@ -1,0 +1,948 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Káčko</title>
+<link rel="icon" id="fav" href="data:,">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Manrope:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#FFF8EA;--sf:#fff;--s2:#FFEFD3;--ln:#F0DDBA;--tx:#1B1406;--mu:#6B5B40;--ac:#FFB343;--ac2:#F2761B;--at:#A85F00;--on:#1B1100;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0D0A06;--sf:#16110A;--s2:#201810;--ln:#352814;--tx:#FBF5E8;--mu:#A99B82;--ac:#FFB343;--ac2:#FF8A3D;--at:#FFB343;--on:#1B1100}}
+:root[data-theme="dark"]{--bg:#0D0A06;--sf:#16110A;--s2:#201810;--ln:#352814;--tx:#FBF5E8;--mu:#A99B82;--ac:#FFB343;--ac2:#FF8A3D;--at:#FFB343;--on:#1B1100}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--bg);color:var(--tx);font:400 16px/1.6 Manrope,system-ui,sans-serif}
+h1,h2,h3{font-family:Unbounded,Manrope,sans-serif;margin:0;line-height:1.1}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--at);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding:0 20px}
+header{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--ln)}
+header .wrap{display:flex;align-items:center;gap:6px;height:74px}
+.logo{display:flex;align-items:center;gap:10px;font:800 16px Unbounded,sans-serif;text-decoration:none;margin-right:auto}
+.logo .lg{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none;overflow:hidden;background:linear-gradient(135deg,var(--ac),var(--ac2));color:var(--on);font:800 15px Unbounded,sans-serif}
+.logo .lg.img{background:none;border-radius:0;width:auto;height:auto;max-width:130px;overflow:visible}
+.logo .lg img{height:54px;width:auto;max-width:130px;object-fit:contain;display:block}
+.hl{display:block;max-height:190px;max-width:340px;width:auto;margin:0 0 22px;object-fit:contain}
+.hl[hidden]{display:none}
+nav{display:flex;gap:2px}
+nav a{padding:8px 13px;border-radius:99px;text-decoration:none;color:var(--mu);font-weight:500;font-size:14px}
+nav a:hover{color:var(--tx)}
+nav a.on{color:var(--tx);background:var(--s2)}
+.ib{background:none;border:1px solid var(--ln);color:var(--tx);border-radius:99px;padding:8px 13px;font:500 14px Manrope,sans-serif;cursor:pointer}
+#mb{display:none}
+.ib{text-decoration:none;display:inline-block;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.rs{margin:38px 0 8px;scroll-margin-top:90px}.rs h3{font:700 24px Unbounded,sans-serif;margin:0 0 4px}
+ol.rl{list-style:none;margin:16px 0 0;padding:0}ol.rl li{display:flex;gap:14px;padding:13px 0;border-bottom:1px solid var(--ln);line-height:1.55}
+ol.rl li::before{content:attr(value);flex:none;min-width:34px;height:26px;padding:0 8px;border-radius:99px;background:color-mix(in srgb,var(--ac) 28%,transparent);color:var(--at);font:700 13px/26px Manrope,sans-serif;text-align:center}
+ol.rl li b{color:var(--tx)}ol.rl li{display:block;position:relative;padding-left:52px}ol.rl li::before{position:absolute;left:0;top:13px}
+.st-pending{background:color-mix(in srgb,#9a8f7c 25%,transparent)!important;color:var(--mu)!important}.st-accepted{background:rgba(46,204,113,.2)!important;color:#1f9d55!important}.st-rejected{background:rgba(229,72,77,.18)!important;color:#d6333a!important}
+.row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.btn.sm2{padding:9px 16px;font-size:14px}
+.story{white-space:pre-wrap;background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:12px 14px;margin:10px 0;color:var(--tx)}
+.ur{display:flex;gap:12px;align-items:center;padding:10px 0;border-bottom:1px solid var(--ln)}.ur span:first-child{flex:1;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:820px){#mb{display:block}nav{display:none;position:absolute;top:74px;left:0;right:0;background:var(--bg);flex-direction:column;padding:12px 20px;border-bottom:1px solid var(--ln)}nav.open{display:flex}}
+.page{display:none;padding:56px 0 90px}.page.on{display:block}
+.hero{padding:72px 0 40px;position:relative;overflow:hidden}
+.hero::before{content:"";position:absolute;inset:-20% -10% auto;height:520px;background:radial-gradient(40% 60% at 25% 30%,color-mix(in srgb,var(--ac) 32%,transparent),transparent),radial-gradient(35% 50% at 80% 20%,color-mix(in srgb,var(--ac2) 22%,transparent),transparent);pointer-events:none}
+.hero .wrap{position:relative}
+.pill{display:inline-flex;gap:9px;align-items:center;border:1px solid var(--ln);background:var(--sf);border-radius:99px;padding:7px 15px;font-size:13px;font-weight:700}
+.dot{width:9px;height:9px;border-radius:50%;flex:none;background:currentColor;color:#2ecc71;box-shadow:0 0 0 4px color-mix(in srgb,currentColor 22%,transparent);animation:pu 2s infinite}
+.dot.off{color:#e5484d;animation:none}
+.dot.wait{color:#9a8f7c;animation:none}
+@keyframes pu{50%{box-shadow:0 0 0 7px color-mix(in srgb,currentColor 0%,transparent)}}
+.hero h1{font-size:clamp(38px,8vw,86px);font-weight:800;letter-spacing:-.02em;max-width:14ch;margin:22px 0 18px;background:linear-gradient(100deg,var(--tx) 30%,var(--at) 70%,var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--mu);font-size:18px;max-width:52ch;margin:0 0 28px}
+.btn{display:inline-block;border:0;cursor:pointer;font:700 15px Manrope,sans-serif;padding:14px 24px;border-radius:99px;background:var(--ac);color:var(--on);text-decoration:none}
+.btn.g{background:var(--sf);color:var(--tx);border:1px solid var(--ln)}
+.mq{overflow:hidden;border-block:1px solid var(--ln);background:var(--sf);padding:14px 0;white-space:nowrap}
+.mq div{display:inline-block;animation:mq 28s linear infinite;font:600 14px Unbounded,sans-serif;color:var(--mu)}
+.mq span{margin:0 22px}.mq b{color:var(--at)}
+@keyframes mq{to{transform:translateX(-50%)}}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:36px 0 0}
+@media(max-width:700px){.stats{grid-template-columns:1fr 1fr}}
+.stats div{background:var(--sf);border:1px solid var(--ln);border-radius:18px;padding:20px}
+.stats b{display:block;font:800 30px Unbounded,sans-serif}.stats span{color:var(--mu);font-size:14px}
+.sec{margin-top:64px}
+.num{color:var(--at);font:700 14px Unbounded,sans-serif;margin-bottom:8px}
+h2.t{font-size:clamp(26px,4vw,40px);margin-bottom:8px}
+.lead{color:var(--mu);max-width:60ch;margin:0 0 28px}
+.bento{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
+.bento>*{grid-column:span 4}
+.bento .c7{grid-column:span 7;grid-row:span 2}.bento .c5{grid-column:span 5}
+@media(max-width:820px){.bento>*,.bento .c7,.bento .c5{grid-column:span 12;grid-row:auto}}
+.card{background:var(--sf);border:1px solid var(--ln);border-radius:22px;padding:24px;text-decoration:none;display:block;transition:border-color .2s,transform .2s}
+a.card:hover,button.card:hover{border-color:var(--ac);transform:translateY(-3px)}
+.card h3{font-size:18px;margin:12px 0 8px}
+.card p{margin:0;color:var(--mu);font-size:15px}
+.ar{float:right;color:var(--at);font-size:22px}
+.big{font:800 54px Unbounded,sans-serif;margin:16px 0 8px}
+.bar{height:9px;background:var(--s2);border-radius:9px;overflow:hidden}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--ac2),var(--ac));width:0;transition:width 1s}
+.ip{display:flex;gap:8px;margin-top:18px;flex-wrap:wrap}
+.ip code{flex:1;min-width:180px;background:var(--bg);border:1px solid var(--ln);border-radius:12px;padding:12px 14px;font-size:14px;overflow:auto;white-space:nowrap}
+.sm{color:var(--mu);font-size:13px}
+.cm{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(280px,1fr))}
+.cm button{display:flex;gap:14px;align-items:center;text-align:left;background:var(--sf);border:1px solid var(--ln);border-radius:16px;padding:14px 16px;color:var(--tx);font:inherit;cursor:pointer}
+.cm button:hover{border-color:var(--ac)}
+.cm code{font:700 15px Unbounded,sans-serif;color:var(--at);min-width:84px}
+.cm span{color:var(--mu);font-size:14px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 20px}
+.chip{border:1px solid var(--ln);background:var(--sf);color:var(--tx);border-radius:99px;padding:8px 16px;font:500 14px Manrope,sans-serif;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--ac);color:var(--on);border-color:var(--ac)}
+input,textarea{width:100%;background:var(--bg);color:var(--tx);border:1px solid var(--ln);border-radius:12px;padding:13px 15px;font:inherit}
+label{display:block;font-weight:700;font-size:14px;margin:16px 0 6px}
+.err{color:#d6336c;font-size:13px;min-height:18px}
+details{background:var(--sf);border:1px solid var(--ln);border-radius:16px;margin-bottom:10px}
+summary{cursor:pointer;padding:16px 20px;font-weight:700;display:flex;gap:12px;align-items:center;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary::after{content:"+";margin-left:auto;color:var(--at);font-size:22px}
+details[open] summary::after{content:"–"}
+details p{margin:0;padding:0 20px 18px;color:var(--mu)}
+.tag{font-size:12px;font-weight:700;padding:3px 11px;border-radius:99px;background:color-mix(in srgb,var(--ac) 22%,transparent);color:var(--at)}
+.av{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;font:800 17px Unbounded,sans-serif;color:#fff}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+.news{text-align:left;font:inherit;color:inherit;width:100%;cursor:pointer}
+dialog{max-width:600px;width:calc(100% - 32px);background:var(--sf);color:var(--tx);border:1px solid var(--ln);border-radius:24px;padding:28px}
+dialog::backdrop{background:rgba(13,10,6,.72)}
+ol.steps{padding:0;margin:0;list-style:none;counter-reset:s}
+ol.steps li{counter-increment:s;display:flex;gap:14px;margin-bottom:16px}
+ol.steps li::before{content:counter(s);flex:none;width:34px;height:34px;border-radius:50%;background:var(--ac);color:var(--on);display:grid;place-items:center;font-weight:700}
+.two{display:grid;gap:32px;grid-template-columns:1fr 1fr}
+@media(max-width:820px){.two{grid-template-columns:1fr}}
+footer{border-top:1px solid var(--ln);padding:30px 0;color:var(--mu);font-size:14px}
+footer .wrap{display:flex;gap:16px;flex-wrap:wrap;justify-content:space-between}
+@media(prefers-reduced-motion:reduce){.mq div,.dot{animation:none}.bar i,.card{transition:none}}
+
+/* ===== MODERNÍ VRSTVA: sklo a bubliny ===== */
+:root:not([data-theme="light"]){--bg:#0A0710;--sf:#17101f;--s2:#241830;--ln:rgba(255,255,255,.10);--tx:#FBF5E8;--mu:#B3A58E;--at:#FFB343;--ac2:#FF8A3D}
+:root{--gl:color-mix(in srgb,var(--sf) 58%,transparent);--sh:0 10px 40px rgba(0,0,0,.28)}
+:root[data-theme="light"]{--gl:color-mix(in srgb,#fff 70%,transparent);--sh:0 10px 40px rgba(120,80,20,.12)}
+.bgimg{position:fixed;inset:0;z-index:-2;background:var(--bg) center/cover no-repeat}
+.bgimg::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,7,16,.50),rgba(10,7,16,.72) 55%,rgba(10,7,16,.90))}
+:root[data-theme="light"] .bgimg::after{background:rgba(255,248,234,.90)}
+.bubs{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.bub{position:absolute;border-radius:50%;border:1px solid rgba(255,255,255,.14);background:radial-gradient(circle at 30% 28%,rgba(255,255,255,.28),rgba(255,179,67,.10) 42%,rgba(255,179,67,.02) 72%);box-shadow:inset 0 0 30px rgba(255,179,67,.08),0 0 60px rgba(255,138,61,.08);animation:fl 20s ease-in-out infinite alternate}
+.b1{width:260px;height:260px;left:-60px;top:18%}.b2{width:120px;height:120px;left:14%;top:62%;animation-duration:15s;animation-delay:-4s}
+.b3{width:340px;height:340px;right:-90px;top:8%;animation-duration:24s;animation-delay:-8s}.b4{width:90px;height:90px;right:18%;top:70%;animation-duration:13s}
+.b5{width:180px;height:180px;left:46%;top:84%;animation-duration:19s;animation-delay:-11s}
+@keyframes fl{from{transform:translate3d(0,0,0) scale(1)}to{transform:translate3d(30px,-70px,0) scale(1.08)}}
+header{background:none;border:0;backdrop-filter:none}
+header .wrap{margin:12px auto;width:calc(100% - 24px);max-width:1120px;height:68px;padding:0 18px 0 20px;border-radius:99px;background:var(--gl);backdrop-filter:blur(18px) saturate(150%);-webkit-backdrop-filter:blur(18px) saturate(150%);border:1px solid var(--ln);box-shadow:var(--sh)}
+nav a.on{background:color-mix(in srgb,var(--ac) 22%,transparent);color:var(--at)}
+.ib{background:var(--gl);backdrop-filter:blur(10px)}
+.card,.stats div,details,.cm button,.story,.rs{background:var(--gl);backdrop-filter:blur(16px) saturate(140%);-webkit-backdrop-filter:blur(16px) saturate(140%);border-color:var(--ln);box-shadow:var(--sh)}
+.card{border-radius:30px;padding:26px}.stats div{border-radius:28px}details{border-radius:24px}.cm button{border-radius:22px}
+.rs{border-radius:32px;padding:24px 28px;margin:22px 0}
+a.card:hover,button.card:hover,.cm button:hover{transform:translateY(-4px) scale(1.01);border-color:color-mix(in srgb,var(--ac) 60%,transparent);box-shadow:0 16px 44px rgba(255,138,61,.16)}
+.pill{background:var(--gl);backdrop-filter:blur(12px);border-color:var(--ln)}
+.btn{box-shadow:0 8px 26px color-mix(in srgb,var(--ac) 38%,transparent);transition:transform .2s,box-shadow .2s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 12px 34px color-mix(in srgb,var(--ac) 52%,transparent)}
+.btn.g{background:var(--gl);box-shadow:none;backdrop-filter:blur(12px)}
+.chip{background:var(--gl);backdrop-filter:blur(10px)}
+.mq{margin:0 12px;border-radius:99px;background:var(--gl);backdrop-filter:blur(14px);border:1px solid var(--ln)}
+input,textarea{border-radius:20px;background:color-mix(in srgb,var(--bg) 55%,transparent);border-color:var(--ln)}
+input:focus,textarea:focus{border-color:var(--ac);outline:0;box-shadow:0 0 0 4px color-mix(in srgb,var(--ac) 22%,transparent)}
+.ip code{border-radius:20px;background:color-mix(in srgb,var(--bg) 55%,transparent)}
+.bar{height:12px;border-radius:12px;background:rgba(255,255,255,.08)}
+.hero{padding-top:56px}
+.hero h1{filter:drop-shadow(0 6px 30px rgba(0,0,0,.45))}
+.hl{filter:drop-shadow(0 10px 30px rgba(0,0,0,.5))}
+.page.on{animation:pg .45s ease both}@keyframes pg{from{opacity:0;transform:translateY(14px)}}
+@media(max-width:820px){nav{top:88px!important;left:12px!important;right:12px!important;border-radius:26px;border:1px solid var(--ln);background:var(--gl)!important;backdrop-filter:blur(20px);box-shadow:var(--sh)}}
+@media(prefers-reduced-motion:reduce){.bub,.page.on{animation:none}}
+
+/* ===== ANIMACE A MODERNÍ DOLADĚNÍ (v2) ===== */
+@property --ang{syntax:'<angle>';initial-value:0deg;inherits:false}
+:root{--ease:cubic-bezier(.2,.75,.2,1)}
+html{scroll-behavior:smooth}
+::selection{background:var(--ac);color:var(--on)}
+
+/* aurora na pozadí */
+.aur{position:fixed;inset:-10%;z-index:-1;overflow:hidden;pointer-events:none;filter:blur(80px) saturate(140%);opacity:.75}
+.aur i{position:absolute;border-radius:50%;mix-blend-mode:screen;will-change:transform}
+.aur i:nth-child(1){width:46vmax;height:46vmax;left:-8%;top:-10%;background:radial-gradient(circle,#ff8a3d 0,transparent 65%);animation:a1 22s ease-in-out infinite alternate}
+.aur i:nth-child(2){width:40vmax;height:40vmax;right:-10%;top:10%;background:radial-gradient(circle,#ffb343 0,transparent 65%);opacity:.7;animation:a2 28s ease-in-out infinite alternate}
+.aur i:nth-child(3){width:44vmax;height:44vmax;left:25%;bottom:-25%;background:radial-gradient(circle,#b23cff 0,transparent 65%);opacity:.5;animation:a3 32s ease-in-out infinite alternate}
+@keyframes a1{to{transform:translate3d(16vw,14vh,0) scale(1.2)}}
+@keyframes a2{to{transform:translate3d(-18vw,18vh,0) scale(.85)}}
+@keyframes a3{to{transform:translate3d(-14vw,-16vh,0) scale(1.15)}}
+:root[data-theme="light"] .aur{opacity:.3;filter:blur(90px)}
+:root[data-theme="light"] .aur i{mix-blend-mode:normal}
+body::after{content:"";position:fixed;inset:0;z-index:60;pointer-events:none;opacity:.06;mix-blend-mode:overlay;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+/* světlo za kurzorem + ukazatel scrollu */
+#cg{position:fixed;left:0;top:0;width:520px;height:520px;margin:-260px 0 0 -260px;z-index:-1;pointer-events:none;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--ac) 20%,transparent),transparent 65%);opacity:0;transition:opacity .5s;will-change:transform}
+#cg.on{opacity:1}
+#sp{position:fixed;left:0;top:0;height:3px;width:100%;z-index:70;transform-origin:0 50%;transform:scaleX(0);background:linear-gradient(90deg,var(--ac2),var(--ac),#ffd98a);box-shadow:0 0 14px var(--ac2)}
+
+/* hlavička */
+header .wrap{transition:height .35s var(--ease),margin .35s var(--ease),box-shadow .35s}
+.sc header .wrap{height:56px;margin-top:6px}
+.logo .lg{transition:transform .5s var(--ease)}
+.logo:hover .lg{transform:rotate(-10deg) scale(1.12)}
+nav a{transition:color .2s,background .25s,transform .2s}
+nav a:hover{transform:translateY(-1px)}
+
+/* úvodní sekvence hrdiny */
+.hero .wrap>*{animation:up 1s var(--ease) both}
+.hero .wrap>:nth-child(1){animation-delay:.05s}.hero .wrap>:nth-child(2){animation-delay:.15s}
+.hero .wrap>:nth-child(3){animation-delay:.3s}.hero .wrap>:nth-child(4){animation-delay:.5s}
+.hero .wrap>:nth-child(n+5){animation-delay:.65s}
+@keyframes up{from{opacity:0;transform:translateY(34px)}}
+.hero h1{background-size:240% 100%;animation:hin 1.3s var(--ease) .3s both,sheen 9s ease-in-out 1.6s infinite alternate}
+@keyframes hin{from{opacity:0;transform:translateY(46px) scale(.96);filter:blur(18px)}}
+@keyframes sheen{to{background-position:100% 0}}
+.hl{animation:up 1s var(--ease) both,bob 6s ease-in-out 1s infinite}
+@keyframes bob{50%{transform:translateY(-10px) rotate(-1.5deg)}}
+
+/* tlačítka */
+.btn,.ib{position:relative;overflow:hidden}
+.btn::after{content:"";position:absolute;inset:0;background:linear-gradient(105deg,transparent 35%,rgba(255,255,255,.55) 50%,transparent 65%);transform:translateX(-120%);transition:transform .7s var(--ease)}
+.btn:hover::after{transform:translateX(120%)}
+.btn:active{transform:scale(.96)}
+.chip{transition:transform .2s,background .2s,color .2s,border-color .2s}
+.chip:hover{transform:translateY(-2px);border-color:var(--ac)}
+.chip:active{transform:scale(.94)}
+
+/* karty: světlo sledující myš + náklon */
+.card,.stats div,.cm button{position:relative;transform-style:preserve-3d;transition:border-color .25s,box-shadow .3s,transform .5s var(--ease)}
+.card::before,.stats div::before,.cm button::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s;background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%),color-mix(in srgb,var(--ac) 24%,transparent),transparent 62%)}
+.card:hover::before,.stats div:hover::before,.cm button:hover::before{opacity:1}
+.tilt{transition:border-color .25s,box-shadow .3s,transform .08s linear!important}
+.ar{display:inline-block;transition:transform .35s var(--ease)}
+a.card:hover .ar{transform:translate(4px,-4px) rotate(8deg)}
+
+/* stavová karta s krouživým okrajem */
+.bento .c7::after{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:2px;pointer-events:none;background:conic-gradient(from var(--ang),transparent 0 62%,var(--ac2) 82%,var(--ac) 94%,transparent);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 7s linear infinite}
+@keyframes spin{to{--ang:360deg}}
+
+/* čísla a ukazatel hráčů */
+.stats b,.big{background:linear-gradient(120deg,var(--tx) 25%,var(--at) 75%,var(--ac2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.bar i{position:relative;overflow:hidden;transition:width 1.4s var(--ease);box-shadow:0 0 18px color-mix(in srgb,var(--ac) 70%,transparent)}
+.bar i::after{content:"";position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.6) 50%,transparent 70%);transform:translateX(-100%);animation:shim 2.6s ease-in-out infinite}
+@keyframes shim{to{transform:translateX(100%)}}
+.mq:hover div{animation-play-state:paused}
+
+/* odhalování při scrollu */
+.rv{opacity:0}
+.rv.in{animation:rvin .9s var(--ease) both;animation-delay:var(--d,0s)}
+@keyframes rvin{from{opacity:0;transform:translateY(34px) scale(.965);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+.num{display:inline-block;padding:5px 14px;border-radius:99px;background:color-mix(in srgb,var(--ac) 16%,transparent)}
+
+/* pravidla, FAQ, dialog */
+ol.rl li{transition:transform .3s var(--ease),background .3s}
+ol.rl li:hover{transform:translateX(6px)}
+ol.rl li::before{transition:transform .35s var(--ease)}
+ol.rl li:hover::before{transform:scale(1.14) rotate(-6deg)}
+details{transition:border-color .25s,box-shadow .3s}
+details[open]{border-color:color-mix(in srgb,var(--ac) 55%,transparent)}
+details[open] summary::after{transform:rotate(180deg)}
+summary::after{transition:transform .35s var(--ease)}
+details[open]>:not(summary){animation:up .5s var(--ease) both}
+dialog[open]{animation:dlg .45s var(--ease)}
+dialog[open]::backdrop{animation:fade .35s both;backdrop-filter:blur(8px)}
+@keyframes dlg{from{opacity:0;transform:translateY(30px) scale(.94)}}
+@keyframes fade{from{opacity:0}}
+input,textarea{transition:border-color .25s,box-shadow .25s,transform .25s}
+input:focus,textarea:focus{transform:translateY(-1px)}
+.av{transition:transform .5s var(--ease)}.card:hover .av{transform:rotate(-8deg) scale(1.1)}
+footer{position:relative}
+footer::before{content:"";position:absolute;left:0;right:0;top:-1px;height:1px;background:linear-gradient(90deg,transparent,var(--ac),transparent);opacity:.6}
+
+@media(prefers-reduced-motion:reduce){
+  .aur i,.hl,.hero h1,.bento .c7::after,.bar i::after{animation:none!important}
+  .hero .wrap>*,.rv.in,details[open]>:not(summary),dialog[open]{animation-duration:.01ms!important}
+  html{scroll-behavior:auto}#cg{display:none}
+}
+
+/* ===== V3: ULTRA MODERN ===== */
+/* vlastní crosshair */
+html.xh,html.xh *{cursor:none!important}
+html.xh input,html.xh textarea{cursor:text!important}
+html.xh:has(dialog[open]),html.xh:has(dialog[open]) *{cursor:auto!important}
+#xh,#xr{position:fixed;left:0;top:0;z-index:100;pointer-events:none;opacity:0;transition:opacity .25s;will-change:transform}
+html.xs #xh,html.xs #xr{opacity:1}
+html.xt #xh,html.xt #xr,html:has(dialog[open]) #xh,html:has(dialog[open]) #xr{opacity:0}
+#xh i{position:absolute;display:block}
+#xh .xi{position:absolute;left:0;top:0;width:0;height:0;transition:transform .45s var(--ease)}
+.xi b{position:absolute;background:var(--ac);border-radius:2px;box-shadow:0 0 6px var(--ac2),0 0 0 .5px rgba(0,0,0,.55);transition:transform .35s var(--ease),background .25s}
+.xi .u,.xi .d{width:2px;height:9px;left:-1px}.xi .l,.xi .r{height:2px;width:9px;top:-1px}
+.xi .u{top:-17px}.xi .d{top:8px}.xi .l{left:-17px}.xi .r{left:8px}
+#xh .dt{width:4px;height:4px;margin:-2px 0 0 -2px;border-radius:50%;background:#fff;box-shadow:0 0 8px var(--ac),0 0 0 1px rgba(0,0,0,.5);transition:transform .25s var(--ease)}
+html.xk .xi .u{transform:translateY(-6px)}html.xk .xi .d{transform:translateY(6px)}html.xk .xi .l{transform:translateX(-6px)}html.xk .xi .r{transform:translateX(6px)}
+html.xp .xi{transform:rotate(45deg) scale(1.35)}
+html.xp .xi b{background:#fff}
+html.xp #xh .dt{transform:scale(2.2)}
+html.xc .xi{transform:scale(.7)}html.xc #xh .dt{transform:scale(.4);background:var(--ac2)}
+#xr{width:38px;height:38px;margin:-19px 0 0 -19px;border-radius:50%;border:1px solid color-mix(in srgb,var(--ac) 55%,transparent);transition:opacity .25s,width .4s var(--ease),height .4s var(--ease),margin .4s var(--ease),border-color .3s,background .3s}
+html.xp #xr{width:64px;height:64px;margin:-32px 0 0 -32px;border-color:var(--ac);background:color-mix(in srgb,var(--ac) 10%,transparent)}
+.pk{position:fixed;z-index:99;width:5px;height:5px;margin:-2.5px;border-radius:50%;pointer-events:none;background:var(--ac);box-shadow:0 0 8px var(--ac2);animation:pk .7s var(--ease) forwards}
+@keyframes pk{to{transform:translate(var(--dx),var(--dy)) scale(0);opacity:0}}
+.rp{position:fixed;z-index:99;width:10px;height:10px;margin:-5px;border-radius:50%;pointer-events:none;border:2px solid var(--ac);animation:rp .7s var(--ease) forwards}
+@keyframes rp{to{transform:scale(7);opacity:0}}
+/* sníh */
+#snow{position:fixed;inset:0;width:100%;height:100%;z-index:55;pointer-events:none}
+/* orb v hrdinovi */
+.hero .wrap>.orb{position:absolute;right:0;top:6px;width:min(30vw,330px);aspect-ratio:1;pointer-events:none;perspective:900px;z-index:0;animation:up 1.2s var(--ease) .5s both,bob 8s ease-in-out 1.7s infinite}
+.orb i{position:absolute;inset:0;border-radius:50%}
+.orb .co{inset:24%;background:radial-gradient(circle at 32% 26%,rgba(255,255,255,.7),transparent 36%),conic-gradient(from 0deg,#ffb343,#ff6a3d,#b23cff,#ff8a3d,#ffb343);box-shadow:0 0 100px rgba(255,138,61,.6),inset 0 0 40px rgba(255,255,255,.28);animation:spin2 12s linear infinite}
+.orb .rg{border:1.5px solid color-mix(in srgb,var(--ac) 65%,transparent)}
+.orb .r1{inset:8%;animation:rx 9s linear infinite}
+.orb .r2{inset:2%;border-color:color-mix(in srgb,#b23cff 65%,transparent);animation:ry 13s linear infinite}
+.orb .r3{inset:-8%;border-style:dashed;opacity:.5;animation:spin2 24s linear infinite reverse}
+@keyframes spin2{to{transform:rotate(360deg)}}
+@keyframes rx{from{transform:rotateX(72deg) rotateZ(0)}to{transform:rotateX(72deg) rotateZ(360deg)}}
+@keyframes ry{from{transform:rotateY(72deg) rotateZ(0)}to{transform:rotateY(72deg) rotateZ(360deg)}}
+@media(max-width:900px){.orb{display:none}}
+.hero .wrap{transform:translateY(calc(var(--sy,0)*.22px));opacity:calc(1 - var(--sy,0)/760)}
+/* další pohyb */
+.aur,.bubs{transition:transform .9s var(--ease)}
+.hero .btn:not(.g){animation:up 1s var(--ease) .5s both,glow 3s ease-in-out 1.6s infinite}
+@keyframes glow{50%{box-shadow:0 10px 44px color-mix(in srgb,var(--ac) 75%,transparent),0 0 0 8px color-mix(in srgb,var(--ac) 14%,transparent)}}
+@keyframes pg{from{opacity:0;transform:translateY(26px) scale(.985);filter:blur(10px)}}
+.logo #lt{background:linear-gradient(100deg,var(--tx) 30%,var(--ac) 50%,var(--tx) 70%) 0 0/250% 100%;-webkit-background-clip:text;background-clip:text;color:transparent;animation:sheen 5s linear infinite alternate}
+h2.t{position:relative;display:inline-block}
+h2.t::after{content:"";position:absolute;left:0;bottom:-8px;height:3px;width:100%;border-radius:3px;background:linear-gradient(90deg,var(--ac2),var(--ac),transparent);transform:scaleX(0);transform-origin:0 50%;transition:transform 1s var(--ease) .3s}
+.page.on h2.t.sc2::after{transform:scaleX(.55)}
+a.card::after{content:"";position:absolute;inset:-1px;border-radius:inherit;padding:1.5px;pointer-events:none;opacity:0;transition:opacity .35s;background:conic-gradient(from var(--ang),transparent 0 55%,var(--ac2) 78%,var(--ac) 92%,transparent);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;animation:spin 4s linear infinite}
+a.card:hover::after{opacity:1}
+.cm code{transition:letter-spacing .35s var(--ease),color .25s}.cm button:hover code{letter-spacing:.06em;color:var(--ac)}
+.dot{animation-duration:1.6s}
+.mq div{animation-duration:20s}
+.mq b{text-shadow:0 0 14px var(--ac)}
+.tag{animation:tg 3.4s ease-in-out infinite}@keyframes tg{50%{box-shadow:0 0 0 5px color-mix(in srgb,var(--ac) 14%,transparent)}}
+@media(prefers-reduced-motion:reduce){
+  #snow,.orb,.pk,.rp{display:none!important}
+  .hero .wrap{transform:none;opacity:1}
+  .logo #lt,a.card::after,.hero .btn,.tag{animation:none!important}
+}
+</style>
+</head>
+<body>
+<div class="bgimg" id="bgimg" aria-hidden="true"></div>
+<div class="aur" aria-hidden="true"><i></i><i></i><i></i></div>
+<div class="bubs" aria-hidden="true"><i class="bub b1"></i><i class="bub b2"></i><i class="bub b3"></i><i class="bub b4"></i><i class="bub b5"></i></div>
+<header><div class="wrap">
+<a class="logo" href="#/" aria-label="Káčko RP – úvod"><span class="lg" id="lg">K</span><span id="lt">Káčko RP</span></a>
+<nav id="nav">
+<a href="#/" data-p="">Hub</a><a href="#/pravidla" data-p="pravidla">Pravidla</a><a href="#/tym" data-p="tym">Tým</a><a href="#/novinky" data-p="novinky">Novinky</a><a href="#/info" data-p="info">Info</a><a href="#/prihlaska" data-p="prihlaska">Přihláška</a><a href="#/admin" data-p="admin" id="na" hidden>Admin</a>
+</nav>
+<a class="ib" id="au" href="#/prihlaseni">Přihlásit</a>
+<button class="ib" id="th" aria-label="Přepnout motiv">Motiv</button>
+<button class="ib" id="mb" aria-expanded="false">Menu</button>
+</div></header>
+
+<main>
+<section class="page" id="p-">
+<div class="hero"><div class="wrap">
+<img class="hl" id="hl" alt="Káčko RP logo" hidden>
+<span class="pill"><span class="dot wait" id="d2"></span><span id="st2">Koukáme, jestli server běží…</span></span>
+<h1>Pojď si zahrát svůj příběh</h1>
+<p>Jsme parta lidí, kteří rádi hrají příběhy. Máme vlastní ekonomiku, ochotný tým a město, které žije. Stačí si vytvořit postavu a přidat se.</p>
+<a class="btn" href="#/prihlaska">Chci hrát s vámi</a> <a class="btn g" href="#/pravidla">Jak to u nás chodí</a>
+</div></div>
+<div class="mq" aria-hidden="true"><div id="mq"></div></div>
+<div class="wrap">
+<div class="stats">
+<div><b data-n="98">0</b><span>členů na Discordu</span></div>
+<div><b data-n="3">0</b><span>aktivních postav</span></div>
+<div><b data-n="4">0</b><span>členů týmu</span></div>
+<div><b data-n="20">0</b><span>odehraných hodin</span></div>
+</div>
+
+<div class="sec"><div class="num">Začni tady</div><h2 class="t">Vítej doma</h2><p class="lead">Podívej se, jak se připojit, co u nás platí a kdo za serverem stojí.</p>
+<div class="bento">
+<div class="card c7"><span class="pill"><span class="dot wait" id="d1"></span><span id="st1">Zjišťuji stav…</span></span>
+<div class="big"><span id="pl">–</span><span class="sm" id="pmax" style="font:500 16px Manrope"> / 64 hráčů</span></div>
+<div class="bar"><i id="bar"></i></div>
+<div class="ip"><code id="jl">cfx.re/join/<span class="jc">…</span></code><button class="btn" id="cp">Kopírovat link</button></div>
+<p class="sm" id="upd" style="margin-top:14px">Zjišťuji stav serveru…</p></div>
+<a class="card c5" href="#/info"><span class="ar">↗</span><h3>Discord</h3><p>Tady se potkáváme, domlouváme eventy a pomáháme si. Bez Discordu se k nám nepřipojíš.</p></a>
+<a class="card c5" href="#/prihlaska"><span class="ar">↗</span><h3>Whitelist</h3><p>Napiš nám, koho chceš hrát. Ozveme se ti do dvou dnů.</p></a>
+<a class="card" href="#/pravidla"><span class="ar">↗</span><h3>Pravidla</h3><p>Nic složitého. Jen ať se tu všichni dobře bavíme.</p></a>
+<a class="card" href="#/tym"><span class="ar">↗</span><h3>Tým</h3><p>Lidé, kteří se o server starají.</p></a>
+<a class="card" href="#/info"><span class="ar">↗</span><h3>Jak začít</h3><p>Krok za krokem a odpovědi na časté otázky.</p></a>
+</div></div>
+
+<div class="sec"><div class="num">Novinky</div><h2 class="t">Co se u nás děje</h2><p class="lead">Aktuální dění a akce ve městě. <a href="#/novinky">Všechny novinky</a></p>
+<div class="grid" id="homeNews"></div></div>
+
+<div class="sec"><div class="num">Příkazy</div><h2 class="t">Pár příkazů na cestu</h2><p class="lead">Klikni na příkaz a zkopíruje se ti.</p>
+<div class="cm" id="cm"></div></div>
+</div>
+</section>
+
+<section class="page" id="p-pravidla"><div class="wrap">
+<div class="num">Pravidla</div><h2 class="t">Pravidla serveru</h2>
+<p class="lead">Přečti si je prosím, než vyrazíš do města. Kdyby ti něco nebylo jasné, napiš nám ticket na Discordu.</p>
+<input id="rs" type="search" placeholder="Hledat v pravidlech…" aria-label="Hledat v pravidlech" style="margin-bottom:14px">
+<div class="chips" id="rc"></div><div id="rl"></div>
+</div></section>
+
+<section class="page" id="p-tym"><div class="wrap">
+<div class="num">Tým</div><h2 class="t">Náš tým</h2>
+<p class="lead">Tohle jsme my. Kdyby něco nehrálo, napiš nám ticket na Discordu, rádi pomůžeme.</p>
+<div class="chips" id="tc"></div><div class="grid" id="tl"></div>
+</div></section>
+
+<section class="page" id="p-novinky"><div class="wrap">
+<div class="num">Novinky</div><h2 class="t">Novinky</h2>
+<p class="lead">Klikni na novinku a přečteš si ji celou.</p>
+<div class="chips" id="nc"></div><div class="grid" id="nl"></div>
+</div></section>
+
+<section class="page" id="p-info"><div class="wrap">
+<div class="num">Info</div><h2 class="t">Jak se připojit</h2>
+<p class="lead">Od prvního kroku po první den ve městě.</p>
+<div class="two">
+<ol class="steps">
+<li><div><b>Připrav si mikrofon a Discord</b><br><span class="sm">Mluvíme spolu hlasem, takže ti musí fungovat mikrofon. A přidej se na náš Discord.</span></div></li>
+<li><div><b>Pošli nám přihlášku</b><br><span class="sm">Pár vět o tobě a o postavě, kterou chceš hrát.</span></div></li>
+<li><div><b>Popovídáme si</b><br><span class="sm">Krátký hovor s někým z týmu. Žádná zkouška, jen se chceme seznámit.</span></div></li>
+<li><div><b>Vyraz do města</b><br><span class="sm">Zadej <code>connect cfx.re/join/<span class="jc">…</span></code>, vytvoř si postavu a hurá do toho.</span></div></li>
+</ol>
+<div><h3 style="font-size:20px;margin-bottom:14px">Časté otázky</h3><div id="fq"></div></div>
+</div>
+</div></section>
+
+<section class="page" id="p-prihlaseni"><div class="wrap" style="max-width:460px">
+<div class="num">Účet</div><h2 class="t" id="at">Ahoj zpátky!</h2>
+<p class="lead">Účet potřebuješ jen kvůli přihlášce. Zabere to chvilku.</p>
+<div class="card" style="transform:none">
+<a class="btn g" href="/auth/discord" style="display:block;text-align:center">Pokračovat přes Discord</a>
+<p class="sm" style="text-align:center;margin:14px 0 0">nebo klasicky, jménem a heslem</p>
+<form id="af" novalidate>
+<label for="aun">Uživatelské jméno</label><input id="aun" autocomplete="username">
+<label for="apw">Heslo</label><input id="apw" type="password" autocomplete="current-password">
+<div id="aw2" hidden><label for="apw2">Heslo znovu</label><input id="apw2" type="password" autocomplete="new-password"></div>
+<div class="err" id="ae"></div>
+<button class="btn" type="submit" id="asb" style="width:100%">Přihlásit se</button>
+</form>
+<p class="sm" style="text-align:center;margin:16px 0 0"><span id="asw">Nemáš účet?</span> <a href="#/prihlaseni" id="as" style="color:var(--at);font-weight:700">Zaregistrovat se</a></p>
+</div></div></section>
+
+<section class="page" id="p-admin"><div class="wrap">
+<div class="num">Admin</div><h2 class="t">Správa přihlášek</h2>
+<p class="lead" id="acnt">Načítám…</p>
+<div class="chips" id="ac"></div><div id="ad"></div>
+<h3 style="font-size:20px;margin:44px 0 6px">Uživatelé</h3><div id="ausr"></div>
+</div></section>
+
+<section class="page" id="p-prihlaska"><div class="wrap" style="max-width:660px">
+<div class="num">Whitelist</div><h2 class="t">Přihláška</h2>
+<p class="lead">Pověz nám, kdo jsi a koho chceš hrát. Nemusí to být román, stačí pár vět.</p>
+<div class="card" id="need" hidden><h3>Ještě se prosím přihlas</h3><p>Ať víme, komu přihlášku přiřadit, potřebujeme ti vytvořit účet. Zabere to chvilku.</p><p style="margin-top:16px"><a class="btn" href="#/prihlaseni">Přihlásit nebo vytvořit účet</a></p></div>
+<div class="card" id="mine" hidden></div>
+<form id="fm" class="card" novalidate style="transform:none">
+<label for="f1">Jak ti máme říkat?</label><input id="f1" autocomplete="nickname"><div class="err" id="e1"></div>
+<label for="f2">Tvoje jméno na Discordu</label><input id="f2"><div class="err" id="e2"></div>
+<label for="f3">Kolik ti je let?</label><input id="f3" type="number" inputmode="numeric"><div class="err" id="e3"></div>
+<label for="f4">Kdo je tvoje postava? (aspoň 80 znaků)</label><textarea id="f4" rows="6"></textarea>
+<div class="sm"><span id="cnt">0</span> znaků</div><div class="err" id="e4"></div>
+<label style="display:flex;gap:10px;align-items:center;font-weight:500"><input id="f5" type="checkbox" style="width:auto"> Pravidla jsem si přečetl/a a budu je dodržovat.</label><div class="err" id="e5"></div>
+<button class="btn" type="submit">Odeslat přihlášku</button>
+</form>
+<div class="card" id="ok" hidden><h3>Děkujeme, máme to!</h3><p>Tvoje přihláška má číslo <b id="ref"></b>. Ozveme se ti na Discordu, obvykle do 48 hodin.</p><p style="margin-top:16px"><a class="btn" href="#/">Zpět na hub</a></p></div>
+</div></section>
+</main>
+
+<dialog id="dg"><div id="db"></div><p style="text-align:right;margin:20px 0 0"><button class="btn" id="dc">Zavřít</button></p></dialog>
+<footer><div class="wrap"><span>© 2026 Káčko RP · Hrajeme spolu a bavíme se spolu.</span><span><a href="#/">Úvod</a> · <a href="#/pravidla">Pravidla</a> · <a href="#/prihlaska">Přihláška</a></span></div></footer>
+
+<script>
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
+
+/* ===== NASTAVENÍ ===== */
+const LOGO="logo.png";
+const BG="bg.svg";   // pozadí: vlastní fotka např. "bg.jpg" (dej ji do složky public); prázdné = jen tmavá barva
+if(BG)$("#bgimg").style.backgroundImage="url("+BG+")";   // sem vlož cestu nebo URL k logu, např. "logo.png" (PNG/SVG/WebP, ideálně s průhledným pozadím)
+const CFG={
+  code:"",          // vyplní se automaticky ze serveru (FIVEM_JOIN_CODE v .env)
+  direct:"",        // volitelně přímá adresa serveru jako záloha, např. "http://123.45.67.89:30120"
+  max:64,           // záložní počet slotů, kdyby ho server nevrátil
+  every:30000       // jak často se stav obnovuje (ms)
+};
+/* ===================== */
+if(LOGO){
+  $("#lg").innerHTML='<img src="'+LOGO+'" alt="">';$("#lg").classList.add("img");
+  $("#lt").hidden=true;$("#hl").src=LOGO;$("#hl").hidden=false;$("#fav").href=LOGO;
+}
+const TEAM=[
+["Cron","Owner","Vedení","Stará se o všechno kromě devu."],
+["! MIKE ✞","Co Owner","Vedení","Drží pohromadě komunitu i eventy."],
+["Draxennn_","Managment","Vedení","Stará se o komunitu, discord a celý server."],
+["Nikolasek","Head Of Staff","Admin","Stará se o Staff Team."]];
+const NEWS=[
+["Aktualizace","2026-10-03","Nová čtvrť Vinohrady Hills","Otevíráme novou obytnou čtvrť s 40 byty, kavárnou a tržištěm.","Bydlení si pořídíš u realitní kanceláře ve městě. Pracovní nabídky najdeš na nástěnce u radnice."],
+["Event","2026-09-28","Pouliční závody: sobota 20:00","Registrace jsou otevřené. Vítěz získá unikátní vozidlo a titul šampiona sezóny.","Závody se pojedou na okruhu kolem přístavu. Registruj se na Discordu u eventového týmu. Místo je pro 24 jezdců."],
+["Oznámení","2026-09-20","Nábor do policie a EMS","Hledáme nové strážníky a záchranáře. Výcvik je součástí.","Přihlášky přijímáme celý měsíc. Výcvik probíhá večer v týdnu. Po testu dostaneš uniformu a vozidlo."],
+["Aktualizace","2026-09-12","Přepracovaná ekonomika","Upravili jsme platy, ceny nemovitostí a daně pro vyváženější start.","Starší hráči o majetek nepřijdou, přepočet proběhl automaticky. Detaily jsou v changelogu na Discordu."],
+["Oznámení","2026-09-01","Změna pravidel o loupežích","Sjednotili jsme počty policistů a zpřísnili postihy.","Aktualizovaná pravidla jsou v sekci Pravidla. Změna platí ihned."]];
+const FAQ=[
+["Je server zdarma?","Ano, hraní je zdarma. Jen musíš projít whitelistem."],
+["Kolik mi musí být let?","Aspoň 15."],
+["Můžu hrát bez zkušeností s RP?","Určitě! Nováčky tu rádi vítáme a na začátku jim pomáhá support."],
+["Co když dostanu ban?","Napiš nám ticket na Discordu a požádej o odvolání. Každý případ si admin projde zvlášť."]];
+const CMD=[["/me","Popisuje určitou činost (Emoce, Animace)."],["/do","Popisuje co tvoje postava dělá za činost."],["/911","Zavolat policii nebo EMS"],["/report","Nahlásit hráče týmu"]];
+const hue=s=>[...s].reduce((a,c)=>a+c.charCodeAt(0),0)*7%360;
+const fmt=d=>new Date(d).toLocaleDateString("cs-CZ",{day:"numeric",month:"long",year:"numeric"});
+
+function chips(el,items,cb){
+  el.innerHTML=["Vše",...items].map((c,i)=>`<button class="chip" aria-pressed="${i==0}" data-v="${i?c:""}">${c}</button>`).join("");
+  el.onclick=e=>{const b=e.target.closest(".chip");if(!b)return;$$("#"+el.id+" .chip").forEach(x=>x.setAttribute("aria-pressed",x==b));cb(b.dataset.v)};
+}
+const SECS=[
+{t:"Základní pravidla",n:"Platí pro všechny hráče bez výjimky.",i:[
+["Vždy v roli.","Hraj svoji postavu za všech okolností, i když je na serveru málo lidí. Pravidla platí stále stejně."],
+["Žádné útoky mimo hru.","Neútoč na ostatní hráče ani na jejich RP přes Discord, sociální sítě nebo streamy. Stížnost patří do ticketu a musí být slušná. Provokace kvůli OOC hádkám jsou zakázané."],
+["Po banu nový účet nezakládej.","Nový účet po zabanování je zakázaný."],
+["Tresty se neobcházejí.","Obcházet tresty nebo dohody s týmem je zakázáno. Rozhodnutí týmu je konečné."],
+["Žádné podvádění.","Zneužívání chyb hry (bugů) je podvod. Chybu nahlas, nevyužívej ji."],
+["Jedna přezdívka všude.","Ve hře, na Steamu i na Discordu používej stejné jméno. První písmeno musí být běžné, bez speciálních znaků."],
+["Slušná přezdívka.","Žádné vulgarismy, nevhodné výrazy ani reklamy v nicku, ať ve hře, nebo na Discordu."],
+["Účet je tvoje odpovědnost.","Nepůjčuj ho. Za škody, které pod ním někdo napáchá, zodpovídáš ty."],
+["Žádné OOC v hlasovém chatu.","Mluv jen jako tvoje postava. Mimo roli komunikuj přes LOOC."],
+["Neodcházej od klávesnice uprostřed scény.","Pokud musíš, dej do LOOC vědět, na jak dlouho odcházíš, nebo jak scénu zahrát."],
+["Po honičce s policií se neschovávej do garáže.","Nezmizíš z hry dřív než 10 minut po ujetí, ať mají hlídky šanci tě najít."],
+["Bunnyhop je zakázaný.","Skákání při běhu nebo jízdě na kole kvůli rychlejšímu přesunu je zneužití hry."],
+["Státní složky neprovokuj bez důvodu.","Když tě někdo nahlásí, musíš svůj důvod umět obhájit. Můžeš si předem říct o to, aby tě admin sledoval."],
+["Uniformy jen pro složky.","Kdo není příslušník státních a ozbrojených složek, uniformu nenosí, pokud to neschválí admin z RP důvodu."],
+["Ve hře platí reálný čas.","Čas ve hře se řídí skutečným časem."],
+["Žádná rasistická slova.","Anglická rasistická slova jsou zakázaná i tehdy, když s tím všichni souhlasí. Nadávky v češtině a slovenštině povolené jsou."],
+["Combat-roll je zakázaný.","Kotouly při potyčkách jsou zneužití mechaniky."],
+["Restart a nelegální činnost.","10 minut před restartem i po něm se žádná nelegální činnost nezačíná."],
+["Žádné pomůcky třetích stran.","Zakázané je cokoli, co dává výhodu nad ostatními: externí zaměřovače (crosshair je přímo na serveru), PvP balíčky s upravenými texturami, cheaty (aimbot, wallhack, speedhack) a jiný software nebo hardware, který mění chování hry."],
+["Telefonní čísla.","Telefon je spojený s číslem a patří tomu, kdo ho získal. Pokud potřebuješ anonymitu, použij třeba telefonní budku nebo jiný způsob, který dává smysl."],
+["Nahrávání přes telefon.","Skryté nahrávání druhé osoby nebo skupiny vyžaduje schválení týmu přes ticket nebo report. Po schválení ho musíš zahrát přes /me a /do. Neplatí pro složky."]
+]},
+{t:"Whitelist",n:"Pro připojení na server musíš projít whitelistem: přihláška a pak krátký pohovor.",i:[
+["Přihláškou se zavazuješ.","Souhlasíš s dodržováním pravidel serveru i zásad společnosti Rockstar (Code of Conduct a Community Guidelines)."],
+["Věk.","Hrát můžeš od 15 let. Doporučujeme být starší, protože náš svět není vždycky pro děti."],
+["Piš vlastními slovy.","Nekopíruj pravidla do odpovědí. Odpovědi shodné s kamarádovými vedou k zamítnutí."],
+["Pohovor se nenahrává.","Otázky ani situace z pohovoru nesmíš nahrávat ani jinak sdílet."],
+["Zůstaň na Discordu.","Whitelist platí jen s členstvím na našem Discordu. Po odchodu ho ztrácíš a čeká tě nový pohovor."],
+["Počet pokusů.","Každý nový uchazeč má 3 pokusy na přihlášku i na pohovor. Další pokus je možný po 24 hodinách."],
+["Po třech neúspěších.","Po třech zamítnutých přihláškách si o další pokus zažádej po měsíci. Po třech neúspěšných pohovorech můžeš po měsíci přijít bez nové přihlášky."],
+["Pokusy se obnovují.","Každý měsíc od posledního pokusu se vrací jeden pokus, nejvýš však na tři."],
+["Ban s opakováním pohovoru.","Při něm máš jen dva pokusy."],
+["Neaktivita.","Po půl roce neaktivity whitelist zaniká a musíš žádat znovu."]
+]},
+{t:"Základní pojmy",n:"Abychom se domluvili na jazyku.",i:[
+["RP (roleplay).","Hraní role s vlastním příběhem, který reaguje na dění a příběhy ostatních hráčů kolem."],
+["OOC.","Out of character, tedy chvíle, kdy jednáš nebo mluvíš za sebe, ne za postavu."],
+["IC.","In character, tedy jednání postavy ve hře."],
+["/me.","Popisuje činnost, nálady a emoce a nahrazuje animace, které hra nemá. Vždy ve třetí osobě. Příklad: „/me nervózně přešlapuje a pokukuje po hodinkách.“"],
+["/do.","Popisuje situaci a prostředí nebo očekává reakci. Nelži v něm, nepiš za ostatní a neovlivňuj cizí RP."],
+["Myšlenky.","Do /me ani /do nepiš, co si postava myslí."],
+["/try.","Náhodně vrátí ano nebo ne. Slouží k rozvinutí scény, ne k tvé výhodě. Nepoužívá se k rozhodování o zranění bez EMS ani při Passive RP."],
+["/try, správně.","Například: „/me zašívá ránu na rameni. /do povedlo se? /try“."],
+["/try, špatně.","Například po bouračce „/do je auto pojízdné? /try“ nebo dotaz na vysílačku, zda smí policista použít pit manévr."],
+["Gross RP.","Drsný nebo nechutný styl, kdy se nelegální činnost popisuje explicitně slovy, písmem nebo animacemi. Prosté „mučí osobu“ Gross RP není, popis detailů ano."],
+["Gross RP vyžaduje souhlas.","Všichni zúčastnění ho musí odsouhlasit v LOOC. Bez souhlasu je zakázané. Rozsah můžeš omezit a kdykoli ho odvolat. Ostatní to musí respektovat."],
+["Neschválený Gross RP.","Není výmluva, jak se vyhnout RP. Hraje se dál, jen bez explicitních detailů. Pokud se ti zdá, že byl zbytečně tvrdý, napiš po dohrání ticket."],
+["Co řadíme pod Gross RP.","Brutální rasové nebo sexuální nadávky, sexuální násilí a obtěžování, kanibalismus, surové zacházení a explicitní popisování mučení."],
+["Žádné trvalé následky.","Nedělej na hráči nic, co hra nezvládne zobrazit (řezání nápisů, ořezávání končetin). Výjimkou jsou části těla, které lze přišít zpět. Ty agresor neničí a oběť si je odnese do nemocnice."],
+["Erotické fotky.","Posílat je bez předchozího souhlasu druhé strany je zakázané. Platí i pro soukromé zprávy, sociální sítě i stream přes ingame telefon."]
+]},
+{t:"Pravidla RP",n:"Jak se u nás hraje, aby si scény užili všichni.",i:[
+["Metagaming.","Informace, které ses dozvěděl mimo hru, nesmíš použít ve hře. Patří sem i stream sniping."],
+["Nabádání k metagamingu.","Neprozrazuj ostatním věci, které jejich postavy nemají jak vědět (např. detaily z vyšetřování nebo únosů)."],
+["Poznávání hráčů.","Podle hlasu, oblečení nebo vzhledu nikoho nepoznáš, dokud spolu postavy neměly dost interakcí. Za dostatečnou se považuje rodina, partnerství, kolegové nebo dlouhodobé RP. Poznání zahraj přes /do, klidně nejistě."],
+["Příslušníci složek.","Nepoznávej je bez jejich potvrzení přes /do, pokud nejde o vztah postav."],
+["Sociální sítě.","Poznávat hráče podle sociálních sítí bez předchozí interakce je zakázáno."],
+["Mixing.","Používání OOC informací ve hře, snaha o vztahy postav podle OOC sympatií a nadávky nebo oslovení, které nesedí k postavě či skupině."],
+["Powergaming.","Postava nemá nadlidské schopnosti. Příklad: „/me bere auto a hází ho přes zahradu.“ Vozidlo můžeš tlačit přes target menu, jen když v něm sedí řidič a dává to smysl."],
+["Fear RP.","Tvoje postava se bojí o život, a to i o život blízkých. Statečnost potřebuje dobrý důvod v příběhu (cvičený člen zásahovky, zkušený kriminálník)."],
+["Strach ze složek.","Respektuj policii a spolupracuj s ní, hlavně když jsi v nevýhodě. Spolupráce může snížit trest."],
+["No-fear RP.","Například tasit zbraň, když míří na tebe, utíkat nebo se při únosu nebát. Servírka se z minuty na minutu nestane zabijačkou."],
+["Water evading.","Neutíkej před složkami plaváním na otevřené moře ani vodním skútrem. Neplatí pro jezera, řeky a podobné vody."],
+["Non-RP driving.","Jezdi s autem tak, jak se k němu hodí. Nehodu zahraj včetně následků. U menšího ťuknutí nemusíš zastavovat. Skok z útesu a jízda dál není RP."],
+["Psychicky nemocné postavy.","Nemoc nesmí sloužit jako výmluva (ukradl bych auto, ale postava je labilní). Pro takovou postavu musíš napsat ticket."],
+["Pravidlo inventáře.","Co máš v inventáři, máš u sebe. Prohledávat tě lze jen tehdy, když zvedneš ruce a vzdáš se. U prohledávání se můžeš zeptat přes /do, kde všude jsi prohledáván. Měj u sebe rozumné množství peněz."],
+["Lov.","Lovit lze pouze lovecké zbraně (sniper rifle, hunting rifle, mušketa). Nespawnuj zvířata pro lov a neloviš tak, že zvíře srazíš autem a vykucháš."],
+["Hraní za zvířata.","Můžeš hrát psa nebo kočku. PvP provádíš jen přes /me a před každým se přes LOOC ptáš na souhlas s Gross RP. Zvíře je rovnocenný hráč a platí pro něj všechna pravidla. Nezabíjí NPC kromě divoké zvěře."],
+["Psi K-9.","Po povelu drží osobu tlamou, mohou stopovat a hledat drogy. Zakázané jsou ničení majetku z provokace a bugování animací."],
+["Fail RP: vybočení.","Vystoupení z loru postavy, neodůvodněné reakce, trollení, ignorování Passive a Fear RP, neadekvátní slova a atmosféra."],
+["Korupce.","Hrát nelegálního policistu, hasiče nebo záchranáře lze jen se schválením týmu."],
+["Informace patří do hry.","Důležité informace předávej ve hře, ne přes Discord. Snitchování policii nebo skupinám nikdy nesmí probíhat offline. Při dlouhé nepřítomnosti postavy se nekomunikuje IC zprávami na Discordu."],
+["Policisté.","Neutíkej před RP tím, že se přepneš do služby, a nezneužívej výhody složek."],
+["Hledání lidí kvůli únosu.","Náhodně je po mapě nehledej."],
+["Nošení po PK.","Vozit zraněného do nemocnice dřív, než mu doběhne 10minutový odpočet, je Fail RP. /carry a podobné příkazy vždy zahraj přes /me a /do."],
+["Rychlé nelegální akce.","Na loupeže (banky, klenotnictví, obchody, domy) nepoužívej motorky, buginy a lodě. Výjimky: akce, která se od začátku odehrává v terénu, záložní vozidlo daleko od místa činu nebo převoz zraněného po PK. Pasivní NPC nelze brát jako rukojmí, ale fyzicky přítomná ano."],
+["Spamování animací.","Při PvP nebo řízení nespamuj nabindované příkazy typu /e prone, /e passout, /e dead."],
+["Kempení na skriptech.","Neokrádej cíleně hráče na unikátních skriptech (vydávání papírků, boosting, klenotník, vrakoviště)."],
+["Animace.","Nezneužívej je ve svůj prospěch a hraj je tak, aby seděly k postavě (mafián v obleku netančí streetdance)."],
+["Okrádání policistů.","Je zakázané bez RP důvodu, jen pro získání výbavy."],
+["Prodej nelegálních látek.","Nepoužívej jednostopá vozidla ani buginy a čtyřkolky. Výjimka platí pro registrované gangy."],
+["Televize ve hře.","Nepouštěj FiveM obsah, české a slovenské písničky a klipy (kromě těch nahraných pro náš server), seriály a české či slovenské YouTube."],
+["Neprůstřelná vesta.","Při jejím použití musíš mít na postavě vizuální vestu (balistická, SWAT, plátová)."],
+["Umělá inteligence.","V soudní komunikaci nebo situaci, kdy postava nemá přístup k aplikaci, nepoužívej ChatGPT."],
+["Více postav.","Základem je jedna. Druhá a další je placená a potřebuje schválení admina. Do ticketu napiš důvod, cíl a popis příběhu. Další postava nesmí být ve střetu zájmů s předchozí. Bez schválení je to porušení i při zakoupení slotu."],
+["Návrat po CK.","Nová postava nesmí mít vazbu na tu zemřelou (příbuzenství, známost). Tým může udělit výjimku."],
+["Postava mladší 18 let.","Uveď to v ticketu."],
+["Lore a serióznost.","Postava je smyšlená, ale reálná osoba, která se vyvíjí podle toho, co zažije. Drž se jejího loru a postavení."],
+["Co je Fail RP u postav.","Menšiny, které na místo nesedí, zesměšňování menšin, filmoví a herní hrdinové (Zaklínač, Marvel) a postavy, které nevypadají jako člověk. Zjisti si lore GTA 5, než začneš hrát menšinu."],
+["Combatlog: po pádu.","Po pádu nebo restartu serveru navaž na předchozí RP akci. Pokud jsi jinde, napiš report a čekej. Když admin neodpovídá, pokračuj sám. Akce přeskakovat nesmíš."],
+["Combatlog: odpojení.","Záměrné odpojení z akce je odmítnutí RP. Při technických potížích informuj tým nebo ostatní ve scéně."],
+["Passive RP, základ.","Veřejná prostranství jsou plná lidí a město žije i bez hráčů. Passive RP platí, i když v okolí nikdo není."],
+["Passive RP v interiérech.","Všechny interiéry jsou zamčené a RP v nich je zakázané, i když nepatří nikomu. Výjimkou jsou budovy veřejné správy (EMS, PD, FD, úřady) a veřejných služeb (obchody, benzínky). Ty jsou plné zaměstnanců a kamer. Sídla frakcí řeší pravidla frakcí."],
+["Passive RP venku.","Doky, továrny a státní objekty mají zaměstnance, hlídače a kamery, takže se tam neunáší ani nevraždí bez svědků. Bez důvodu nikoho na ulici neohrožuj zbraní."],
+["Únos na veřejnosti.","Je třeba ho nahlásit přes /911 s údaji (barva a typ auta, počet osob, směr jízdy)."],
+["Území gangů.","Je to místo se zvýšenou kriminalitou, kde mohou být lidé ozbrojení. EMS a FD přizpůsobí vstup situaci. Za běžných okolností je pohyb v pořádku, jen přizpůsob velikost strachu."],
+["Pláž.","Přes den je plná lidí. Jízda autem po ní se nedoporučuje."],
+["Výjimky z Passive RP.","Tým může objekt jednorázově označit za opuštěný nebo vysídlený, například fabriku, která vypadá opuštěně."],
+["Sledování.","Zakázané je sledovat obchody a hráče, kteří tam nakupují nebo přijíždějí a odjíždějí."],
+["Kamery.","RPit je smíš jen u objektů, kde jsou, nebo kde je ve hře model kamery. Ve vozidlech je mají složky a taxikáři. Potřebuješ jiné místo? Napiš ticket s objektem a účelem."],
+["Policejní stanice.","Uvnitř ani na parkovištích nikoho nezabíjej ani nezraňuj bez předem schváleného RP důvodu."]
+]},
+{t:"PvP pravidla",n:"Boj, zranění, smrt a krádeže.",i:[
+["Držení osob.","Únos trvá nejdéle hodinu, delší dobu si domluvte v OOC. Unesenou osobu nedržíš v interiéru, kam se chodí jen teleportem."],
+["Cela.","Hráče nedrž v cele déle než 3 hodiny, pokud mu policie nezajistí RP aktivitu. Čas na vyjádření vyšší instance nebo právníka se nepočítá."],
+["Jídlo a pití.","Rukojmí musí mít dost vody a jídla, jinak to bereme jako KOS."],
+["Tresty.","Trest od policie nebo soudu musíš aktivně odehrát. Pokud nejde (dlouhý trest, musíš odejít), domluv se s týmem. Útěk z vězení jen po schválení."],
+["Lovecké zbraně.","Sniper, hunting rifle a mušketa jsou jen na lov. V PvP smí sloužit pouze k obraně při lovu."],
+["Tlumiče.","Na brokovnicích je zakázáno nosit tlumiče."],
+["Nepravé zbraně.","Airsoftové, paintballové, plynové a nefunkční zbraně nebo zbraně jako doplněk či šperk jsou zakázané. Neplatí pro výcviky složek."],
+["Velké zbraně.","Pokud je nemáš v ruce, musíš je přiznat přes /me a /do (např. obrys pod bundou, popruh na zádech). Jinak je to asspulling."],
+["Sériová čísla.","Zbrušovat nebo odstraňovat je zakázáno."],
+["Dlouhé zbraně složek.","V policejním voze jsou uzamčené v boxu, dokud je akce nevyžaduje."],
+["Molotov.","Při přestřelkách se nepoužívá. K vypálení objektu potřebuješ pádný důvod a více než jednu interakci. U interiéru ti musí akci schválit tým přes ticket. Malé exteriérové škody nahlas přes report a pak napiš ticket. Škody nesmí být rozsáhlé."],
+["Vrtulník.","Ze vrtulníku se nestřílí běžnými ručními zbraněmi."],
+["Srážení lidí.","Autem nikoho úmyslně nesráž, ani při přestřelce."],
+["Krádeže vozidel.","Auta (NPC i hráčů) se kradou jen s RP důvodem, například kvůli VK nebo nelegální činnosti."],
+["Auta PD.","Pokud chceš ukrást policejní auto, musíš kontaktovat admina přes /report. Pak je sledovatelné, nebo musíš důkladně zahrát odstranění sledování."],
+["VIN čísla.","Zbrousit je lze jen s dobrým důvodem a musíš zahrát rozebrání vozu a postupné odstranění. Dělat to mohou jen mechanici a jen majitel vozidla. Policie podle VIN najde majitele. Auto bez VIN a SPZ dostane automaticky VK."],
+["VK, vehicle kill.","Neopravitelné zničení vozu (třeba výbuch). VK cizímu autu schvaluje tým přes ticket (důvod, vozidlo, screen místa a popis). Na vlastní auto stačí ticket. VIN se při VK neztrácí."],
+["KOS.","Zabití na první pohled bez předchozího RP a interakce je zakázané."],
+["PK, základ.","Postava je zraněná a potřebuje ošetření kompetentní osobou podle rozsahu zranění. Lehká zranění zvládneš sám. Nehody, střelná zranění a hluboké rány řeší lékař. Revive můžeš v odůvodněných případech požádat přes /report."],
+["Po PK.","Postava si většinou pamatuje. Ztrátu paměti smíš hrát jen s pádným důvodem (např. úder do hlavy) a ne proto, abys utekl před obviněním."],
+["Střelné a bodné rány.","Musíš do nemocnice nebo k oprávněné osobě, i když tě předtím ošetřil jiný hráč. V nemocnici se hlásí pacient se střelným zraněním policejnímu dispatchi SMS."],
+["Zdravotní pomoc.","Zahraj ji podle povahy zranění. Zranění je třeba zahrát i bez PK."],
+["Bez doktorů.","Vyplň u NPC v nemocnici zdravotní záznam. Píše se ve 3. osobě a uvádí se místo, odkud byl pacient přivezen."],
+["Volání o pomoc.","Klávesu G v PK použij jen tehdy, když kolem nejsou hráči (anonymní upozornění EMS)."],
+["Respawn.","Pokud ti vyprší čas v PK, probudíš se v nemocnici zraněný a musíš se hned nechat ošetřit."],
+["V PK nespamuj.","Nevolej spam vysílačkou ani panic buttonem. Mluvit lze podle povahy zranění, těžce zraněný neříká dlouhé věty ve svůj prospěch."],
+["Revenge kill.","Po PK jsi 24 hodin zraněný a nemstíš se. Bránit se můžeš. Později musí pomstě předcházet RP a kontakt, nikdy KOS. Neplatí pro přátelské souboje a přijímací rituály."],
+["CK.","Je to definitivní smrt postavy a musí ji předem schválit tým. Výjimkou je situační CK."],
+["Po CK.","Do LOOC napiš „CK – IC jméno postavy“ a do ticketu uveď místo, způsob a co se s tělem stalo."],
+["Vlastní CK.","Self CK schvaluje tým a hraje se odletem. Při smrti postavy mladší než měsíc je nová postava zpoplatněna."],
+["CK jiné postavy.","Potřebuje dostatečný RP důvod a dlouhodobé RP. Poškozený se může odvolat. CK na člena týmu piš nezávislým členům týmu."],
+["Doživotí.","Trest odnětí svobody na doživotí je CK postavy a soud ho uděluje jen za velmi závažných okolností."],
+["Návrat k nelegální činnosti.","Po CK měsíc nepracuj s původní organizovanou skupinou na nelegálních věcech ani jako externí spolupracovník. Legální interakce jsou v pořádku."],
+["Situační CK.","Jen s velmi dobrým důvodem (např. vražda blízké osoby před tvýma očima). Ohlas to přes report, požádej o spectate a napiš ticket. Když nikdo neodpoví, můžeš ho dát a ticket napsat hned. Při slabém zdůvodnění může být CK odvoláno."],
+["Státní vozidla.","Krást vozidla PD, EMS, FD a vlády je zakázané. O výjimku požádej tým před akcí."],
+["Loupeže domů a obchodů.","Je potřeba přítomnost policie na serveru a omezení časem ze skriptu. 10 minut před a po restartu se nevykrádá."],
+["Obydlené jednotky.","Vykrádat je lze jen tehdy, když majitel nezamkl dveře."],
+["Policisté při rukojmích.","Chrání život rukojmích a neriskují jejich bezpečí."],
+["Co zloděj nevezme.","Debetní kartu, telefon (bez dobrého důvodu), klíče od interiéru a sadu mechanika."],
+["Taxikáři.","Nesmíš je okrádat bez RP důvodu, vozidla mají kamery."]
+]},
+{t:"Frakce",n:"Firmy, kluby, skupiny i gangy. Platí pro legální i nelegální.",i:[
+["Co je frakce.","Seskupení hráčů se stejným cílem v RP (firma, klub, provozovna, nelegální skupina). Jejich postavení určuje chování v RP, ne počet členů."],
+["Založení.","Potenciální vůdce napíše ticket: životopis a historie, cíl, členové s hierarchií a pozicemi, rodinné vazby (průběžně aktualizovat), případný IC Discord, krátký životopis zakládajících členů a požadované výhody."],
+["Počty.","Aspoň 2 postavy, nejvýš 16. Navýšení může tým schválit výjimečně."],
+["Sídlo.","Frakce může získat prostornější interiér. Žádá se ve frakčním ticketu."],
+["Výhody.","Garáž, vývozy, craft a další. Legální frakce k nim potřebují IC firmu. Tým rozhoduje po žádosti."],
+["Změny hlásí vůdce.","Prodej sídla, přepis frakce nebo změna vůdce vyžadují schválení týmu."],
+["Gross RP na majetek.","Nesmí sloužit k převzetí nemovitosti jiné frakce."],
+["Využívej výhody.","Neaktivní frakce o ně může přijít a tým ji může zrušit nebo předat jinému hráči."],
+["Více frakcí.","Jedna postava může být ve více frakcích, pokud má k tomu RP důvod."],
+["Discord frakce.","Povinný. Musí být na něm aspoň dva členové týmu s plnými právy. IC informace musí mít jasně uvedený způsob zápisu (kniha, cloud, web, tablet) a oddělenou IC a OOC část."],
+["Reálné předlohy.","Nenavazuj na to, co skupina dokázala v realitě. Začínáš od nuly a respekt se získává ve hře."],
+["Přijímání členů.","Každá frakce má vlastní nábor a členové musí mít relevantní kvalifikaci."],
+["Konec nelegální frakce.","Po jejím zrušení se postavy smažou, pokud tým na žádost nerozhodne jinak."],
+["Poplatek.","Po schválení se platí poplatek za založení frakce."],
+["Vazby.","Mít lorové vazby na jiné frakce je zakázáno."],
+["Frakční objekty.","Jsou sídla, bary, kluby, dílny a pod. Schvaluje je tým a pořizují se IC nákupem nebo pronájmem. Ceny stanovuje tým podle ekonomiky a může je měnit."]
+]},
+{t:"Gang pravidla",n:"Nepovinné, pokud nehraješ gang RP. Znalost se vyžaduje u žádosti o gang.",i:[
+["Co je gang RP.","Specifický styl hry kolem pouličních gangů, který klade důraz na interakce, území, strach a deeskalaci."],
+["Gang admin.","Hráči, kteří pomáhají udržovat gang RP, komunikují s komunitou a týmem, řeší striky a dávají feedback. Nemají ingame práva ani přístup do ticketů."],
+["Velikost.","Maximálně 18 členů a všichni jsou na gang Discordu. Poplatek za založení není."],
+["Lore.","Vychází z předlohy, doplněný o vlastní nápady a sepsaný na frakčním Discordu. Obsahuje tetování, hudbu, slang, vozy, oblečení a gang signs."],
+["Sety.","Gang se může dělit na sety, které sdílejí kulturu a symboliku, ale liší se názory, územím a chováním. Názvy a mapa jsou jen inspirace."],
+["Nezůstávejte jen u sebe.","Gangy chodí po městě, potkávají se v obchodech, gymu, na hřištích a v komunitních centrech. Respekt se buduje interakcí."],
+["Vysílačky.","Na gang území jsou zakázané a berou se jako fail RP. Mimo gang činnost (heisty, eventy) povolené jsou."],
+["Combat-roll a výroba drog.","Kotouly jsou zakázané a gangy drogy nevyrábějí. Výhodu mají v prodeji."],
+["Taneční animace.","Street dance lze použít, pokud sedí do loru."],
+["Strike.","Gang má 5 striků. Udělí se, když většina členů při akci poruší základní pravidlo (Fear, Driveby, Pullup, KOS). Rozhoduje tým a každý měsíc se jeden strike maže."],
+["Oblečení.","Gang se reprezentuje barvou, ale střídmě, ne od hlavy k patě. Poznávání podle gang signs je povolené."],
+["Vozy.","Doporučují se starší americké sedany a SUV. Supersporty a vozy, které nesedí do loru, jsou zakázané."],
+["Tagy.","Netaguj uprostřed hoodu ani na cizí domy. Hledej zdi a zadní strany. Při tagování budov dodrž Passive a Fear. V nepřátelském hoodu žádné složité obrazy."],
+["Zbraně.","Doporučené jsou Glock-17, heavy pistole, Tec-7, mini SMG, brokovnice, AKM a MK2."],
+["Fear RP u gangů.","Střelba je až poslední možnost a vždy se bojíš o život, ze zbraně i z policie. Při střelbě na vlastním území počítáš s příjezdem policie."],
+["Passive RP u gangů.","Z pohledu cizince je území nebezpečné, ale kdokoli se tam může pohybovat. Z pohledu člena děláš všechno proto, abys neohrozil důvěru lidí kolem sebe."],
+["Eskalace.","Level 1 slova a vyhrožování, level 2 provokace a vandalismus, level 3 fyzické napadení, level 4 střelba (walk-by, drive-by, pull-up). Konflikt se má dát vyřešit a nemusí skončit střelbou."],
+["Blockwipe.","Útok vždy míří na konkrétní osoby. Vyvraždění celého hoodu je zakázané."],
+["Manhunt.","Běhání po cizím hoodu jen kvůli dorazení někoho je Fail RP."],
+["Únosy.","Neunášíme kvůli informacím a nevedeme si složky s informacemi."],
+["Revenge kill u gangů.","1 hodina při potyčce se zbraněmi na blízko, 3 hodiny u střelných zbraní. U hromadných potyček platí pro celý gang. Revenge kill na revenge kill ve střeleckém stádiu je zakázaný."],
+["Drive-by.","Max 4 lidé v jednom autě. Najedete, předáte vzkaz, vystřílíte lidi, se kterými jste interagovali, a odjedete bez návratu. Honit někoho po celém hoodu nelze."],
+["Walk-up.","Pěší vstup do hoodu s vzkazem, nemusí skončit zbraněmi. Autem zastavíš mimo hood a dojdeš pěšky."],
+["Pull-up.","Předání vzkazu jako odplata za něco, co vám protivník udělal. Vždy vážný důvod, max 4 lidé a cílem je zranění a zpráva, ne PK všech."],
+["Traffic-by.","Interakce dvou aut. Smíš ho udělat jen s lidmi, se kterými už byla interakce. Můžeš předat vzkaz a střílet z auta, poté rychle odjet a nevracet se."],
+["Okrádání.","Neokrádáš při pullupu nebo drive-by. Povolené jsou oblečení, melee, drogy, peníze a ve vlastním hoodu i zbraně. Okrádání není loot."],
+["Backfire.","Když na tebe střílejí, musíš se krýt. Střílet bez krytí je porušení Fear RP."],
+["Střelba ze střech.","Chodit na střechy kvůli střelbě po jiném gangu je zakázané."],
+["Protesty a symbolika.","Bílá barva značí, že se i nepřátelské gangy spojily proti systému, obvykle po stupňování represe. Protesty jsou nárazové a netrvají déle, než je nezbytné."]
+]},
+{t:"Komunita",n:"Jak se chováme k sobě i navenek.",i:[
+["Reklama.","Neprezentuj jiné stránky ani servery bez domluvy s vedením."],
+["Kyberšikana.","Zesměšňování hráčů ve hře, na komunitních kanálech, frakčních Discordech i streamech vede k dlouhému banu až permabanu."],
+["Nenávist.","Sexismus, ageismus, rasismus a osobní urážky na všech kanálech a jejich promítání do hry jsou zakázané."],
+["Cizí fotky a videa.","Nezveřejňuj osobní fotografie a videa k zesměšnění ani je neupravuj do videí, gifů nebo emoji. Na žádost je odstraň, jinak hrozí permanentní zákaz."],
+["Zakázané komunity.","Členství na Discordech zaměřených na kyberšikanu nebo cheating vede k permanentnímu zákazu."],
+["Streamer.","Dodržuje pravidla jako každý jiný hráč, nekomentuje negativně RP ostatních a odpovídá za svůj chat (trash talk, metagaming)."],
+["Stream a tým.","Když tým řeší situaci, změň overlay a při předvolání ztlum zvuk."],
+["Stream partner.","Role se žádá ticketem. Napiš, proč ji chceš, jaký je tvůj RP cíl, přidej odkaz na kanál a statistiky za měsíc. Streamer poskytne tým záznam na požádání."],
+["Sociální sítě.","Zveřejňuj jen skutečné záběry z našeho serveru, nikoli z jiných serverů, her nebo AI obrázků. Grafické úpravy a propagační materiály jsou v pořádku."],
+["Komunikace s týmem.","Ve hře piš /report. Administrativu a vývoj řeš v ticketu na Discordu. Bez whitelistu nepiš členům týmu do soukromých zpráv, pokud nejsou testeři. Každý člen týmu určuje, kdo smí psát do soukromí."],
+["Respekt k týmu.","Zesměšňovat, ponižovat, urážet ani vyhrožovat členovi týmu nesmíš. Komunikační kanály nezneužívej."],
+["Bugy.","Hlas je v Discordu v kanálu pro bugy, ne přes /report."],
+["Rozhodnutí týmu.","Je konečné."],
+["Pozastavení RP (STOP-RP).","Tým může scénu zastavit. Nemluv do hry a nehýbej se z místa, dokud tým neřekne, jak dál."],
+["Peace time.","Vyhlašuje ho jen tým a platí pro celý server, pokud neřekne jinak. Co se v něm stalo, se nepočítá a postava si nic nepamatuje."]
+]},
+{t:"Závěrečné ustanovení",n:"",i:[
+["Znalost pravidel.","Všichni hráči je musí znát. Porušení i neznalost se trestají a při větších prohřešcích přijde ban bez odvolání."],
+["Změny.","Vedení má právo pravidla měnit a hráči budou informováni."]
+]}
+];
+let rc="";
+function rules(){
+  const q=$("#rs").value.toLowerCase();
+  $("#rl").innerHTML=SECS.filter(s=>!rc||s.t==rc).map(s=>{
+    const it=s.i.map((r,k)=>[k+1,r]).filter(x=>(x[1][0]+" "+x[1][1]).toLowerCase().includes(q));
+    return it.length?`<section class="rs"><h3>${s.t}</h3>${s.n?`<p class="sm">${s.n}</p>`:""}<ol class="rl">${it.map(x=>`<li value="${x[0]}"><b>${x[1][0]}</b> ${x[1][1]}</li>`).join("")}</ol></section>`:"";
+  }).join("")||'<p class="sm">Nic jsme nenašli. Zkus jiné slovo.</p>';
+}
+chips($("#rc"),SECS.map(s=>s.t),v=>{rc=v;rules()});$("#rs").oninput=rules;rules();
+function team(g){
+  $("#tl").innerHTML=TEAM.filter(t=>!g||t[2]==g).map(t=>`<div class="card" style="transform:none"><div class="av" style="background:hsl(${18+hue(t[0])%32} 70% 38%)">${t[0].split(" ").map(x=>x[0]).join("")}</div><h3>${t[0]}</h3><span class="tag">${t[1]}</span><p style="margin-top:10px">${t[3]}</p></div>`).join("");
+}
+chips($("#tc"),[...new Set(TEAM.map(t=>t[2]))],team);team("");
+const card=(n,i)=>`<button class="card news" data-i="${i}"><span class="tag">${n[0]}</span> <span class="sm">${fmt(n[1])}</span><h3>${n[2]}</h3><p>${n[3]}</p></button>`;
+function news(c){$("#nl").innerHTML=NEWS.map((n,i)=>[n,i]).filter(x=>!c||x[0][0]==c).map(x=>card(x[0],x[1])).join("")}
+chips($("#nc"),[...new Set(NEWS.map(n=>n[0]))],news);news("");
+$("#homeNews").innerHTML=NEWS.slice(0,3).map(card).join("");
+document.addEventListener("click",e=>{
+  const b=e.target.closest(".news");if(!b)return;const n=NEWS[b.dataset.i];
+  $("#db").innerHTML=`<span class="tag">${n[0]}</span> <span class="sm">${fmt(n[1])}</span><h3 style="margin:14px 0;font-size:22px">${n[2]}</h3><p>${n[3]}</p><p style="color:var(--mu)">${n[4]}</p>`;$("#dg").showModal();
+});
+$("#dc").onclick=()=>$("#dg").close();
+$("#fq").innerHTML=FAQ.map(f=>`<details><summary>${f[0]}</summary><p>${f[1]}</p></details>`).join("");
+$("#cm").innerHTML=CMD.map(c=>`<button data-c="${c[0]}"><code>${c[0]}</code><span>${c[1]}</span></button>`).join("");
+$("#cm").onclick=async e=>{const b=e.target.closest("button");if(!b)return;const s=b.querySelector("span"),o=s.textContent;try{await navigator.clipboard.writeText(b.dataset.c);s.textContent="Zkopírováno"}catch(x){s.textContent="Kopírování nepodporováno"}setTimeout(()=>s.textContent=o,1600)};
+$("#mq").innerHTML=("<span>FiveM Roleplay</span><b>✦</b><span>Vlastní ekonomika</span><b>✦</b><span>Whitelist</span><b>✦</b><span>Aktivní tým</span><b>✦</b><span>Voice RP</span><b>✦</b>").repeat(8);
+
+const esc=x=>String(x??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const api=async(u,o={})=>{const r=await fetch(u,{credentials:"same-origin",headers:{"Content-Type":"application/json"},...o,body:o.method?JSON.stringify(o.body||{}):undefined});let j={};try{j=await r.json()}catch(e){}if(!r.ok)throw new Error(j.error||"Chyba "+r.status);return j};
+let ME=null,reg=false;
+function hook(){const id=($(".page.on")||{}).id;if(id=="p-prihlaska")appState();if(id=="p-admin")loadAdmin()}
+async function loadMe(){try{ME=(await api("/api/me")).user}catch(e){ME=null}$("#au").textContent=ME?"Odhlásit · "+ME.name:"Přihlásit";$("#au").title=ME?"Odhlásit se":"";$("#na").hidden=!(ME&&ME.role=="admin");hook()}
+$("#au").onclick=async e=>{if(!ME)return;e.preventDefault();try{await api("/api/logout",{method:"POST"})}catch(x){}ME=null;await loadMe();location.hash="#/"};
+function mode(r){reg=r;$("#at").textContent=r?"Vítej u nás!":"Ahoj zpátky!";$("#asb").textContent=r?"Vytvořit účet":"Přihlásit se";$("#aw2").hidden=!r;$("#asw").textContent=r?"Už máš účet?":"Nemáš účet?";$("#as").textContent=r?"Přihlásit se":"Zaregistrovat se";$("#apw").autocomplete=r?"new-password":"current-password";$("#ae").textContent=""}
+$("#as").onclick=e=>{e.preventDefault();mode(!reg)};
+$("#af").onsubmit=async e=>{e.preventDefault();const u=$("#aun").value.trim(),p=$("#apw").value,E=$("#ae");E.textContent="";
+  if(reg&&p!==$("#apw2").value){E.textContent="Hesla se neshodují.";return}
+  try{await api(reg?"/api/register":"/api/login",{method:"POST",body:{username:u,password:p}});$("#af").reset();await loadMe();location.hash="#/prihlaska"}catch(x){E.textContent=x.message}};
+{const m=new URLSearchParams(location.search).get("autherr");if(m){$("#ae").textContent=m;history.replaceState(null,"",location.pathname+location.hash)}}
+const ST={pending:"Čeká na posouzení",accepted:"Přijata",rejected:"Zamítnuta"};
+const dt=ms=>new Date(ms).toLocaleString("cs-CZ",{day:"numeric",month:"numeric",year:"numeric",hour:"2-digit",minute:"2-digit"});
+async function appState(){
+  const show=(a,b,c)=>{$("#need").hidden=!a;$("#mine").hidden=!b;$("#fm").hidden=!c;$("#ok").hidden=true};
+  if(!ME){show(1,0,0);return}
+  try{const it=(await api("/api/applications/mine")).item;
+    if(it&&it.status!="rejected"){$("#mine").innerHTML=`<h3>Tvoje přihláška NC-${String(it.id).padStart(5,"0")}</h3><p><span class="tag st-${it.status}">${ST[it.status]}</span> <span class="sm">podána ${dt(it.created)}</span></p>${it.note?`<p style="margin-top:12px">Zpráva od týmu: ${esc(it.note)}</p>`:""}`;show(0,1,0);return}
+    if(it)$("#e5").textContent="Minulá přihláška byla zamítnuta"+(it.note?": "+it.note:"")+". Můžeš podat novou.";
+  }catch(e){}
+  show(0,0,1);if(ME.discord&&!$("#f2").value)$("#f2").value=ME.discord;
+}
+let AD=[],AF="";
+const AFM={"Čekající":"pending","Přijaté":"accepted","Zamítnuté":"rejected"};
+chips($("#ac"),Object.keys(AFM),v=>{AF=AFM[v]||"";drawAdmin()});
+async function loadAdmin(){
+  if(!ME||ME.role!="admin"){$("#acnt").textContent="";$("#ac").hidden=true;$("#ausr").innerHTML="";$("#ad").innerHTML='<div class="card" style="transform:none"><h3>Přístup jen pro adminy</h3><p>'+(ME?"Tvůj účet nemá administrátorská práva.":'Nejdřív se <a href="#/prihlaseni" style="color:var(--at)">přihlas</a>.')+"</p></div>";return}
+  $("#ac").hidden=false;
+  try{const[a,u]=await Promise.all([api("/api/admin/applications"),api("/api/admin/users")]);AD=a.items;drawAdmin();
+    $("#ausr").innerHTML=u.items.map(x=>`<div class="ur"><span>${esc(x.username||x.discord_name)}${x.username&&x.discord_name?" · "+esc(x.discord_name):""}${x.username?"":' <span class="sm">(Discord)</span>'}</span><span class="tag">${x.role}</span>${x.id==ME.id?"":`<button class="chip" data-uid="${x.id}" data-role="${x.role=="admin"?"user":"admin"}">${x.role=="admin"?"Odebrat admina":"Udělat adminem"}</button>`}</div>`).join("")}
+  catch(e){$("#ad").textContent=e.message}
+}
+function drawAdmin(){
+  const l=AD.filter(a=>!AF||a.status==AF);
+  $("#acnt").textContent="Celkem "+AD.length+" přihlášek, čeká "+AD.filter(a=>a.status=="pending").length+".";
+  $("#ad").innerHTML=l.length?l.map(a=>`<details><summary><span class="tag st-${a.status}">${ST[a.status]}</span>${esc(a.nick)} <span class="sm">${dt(a.created)}</span></summary><div style="padding:0 20px 18px"><p style="padding:0;margin:0">Discord: <b>${esc(a.discord)}</b> · Věk: <b>${a.age}</b> · Účet: <b>${esc(a.account||"?")}</b></p><div class="story">${esc(a.story)}</div><label for="n${a.id}" style="margin-top:4px">Poznámka (uvidí ji žadatel)</label><input id="n${a.id}" maxlength="500" value="${esc(a.note||"")}"><div class="row"><button class="btn sm2" data-id="${a.id}" data-s="accepted">Přijmout</button><button class="btn g sm2" data-id="${a.id}" data-s="rejected">Zamítnout</button>${a.status!="pending"?`<button class="btn g sm2" data-id="${a.id}" data-s="pending">Vrátit mezi čekající</button>`:""}</div>${a.reviewer&&a.status!="pending"?`<p class="sm" style="padding:10px 0 0">Posoudil ${esc(a.reviewer)} · ${dt(a.decided)}</p>`:""}</div></details>`).join(""):'<p class="sm">Žádné přihlášky.</p>';
+}
+document.addEventListener("click",async e=>{
+  const b=e.target.closest("[data-s],[data-uid]");if(!b)return;
+  try{if(b.dataset.s)await api("/api/admin/applications/"+b.dataset.id,{method:"POST",body:{status:b.dataset.s,note:$("#n"+b.dataset.id).value}});
+    else await api("/api/admin/users/"+b.dataset.uid+"/role",{method:"POST",body:{role:b.dataset.role}});
+    loadAdmin()}catch(x){alert(x.message)}
+});
+
+function route(){
+  const p=location.hash.replace(/^#\/?/,"");
+  const k=["pravidla","tym","novinky","info","prihlaska","prihlaseni","admin"].includes(p)?p:"";
+  $$(".page").forEach(s=>s.classList.remove("on"));$("#p-"+k).classList.add("on");
+  $$("#nav a").forEach(a=>a.classList.toggle("on",a.dataset.p===k));
+  $("#nav").classList.remove("open");$("#mb").setAttribute("aria-expanded","false");
+  hook();document.title=(k?k[0].toUpperCase()+k.slice(1)+" – ":"")+"Nova City RP";scrollTo(0,0);
+}
+addEventListener("hashchange",route);route();loadMe();
+$("#mb").onclick=()=>{const o=$("#nav").classList.toggle("open");$("#mb").setAttribute("aria-expanded",o)};
+$("#th").onclick=()=>{const r=document.documentElement,d=r.dataset.theme||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");r.dataset.theme=d=="dark"?"light":"dark"};
+
+async function jget(u){
+  const c=new AbortController(),t=setTimeout(()=>c.abort(),8000);
+  try{const r=await fetch(u,{signal:c.signal,cache:"no-store"});if(!r.ok){const e=new Error("http");e.code=r.status;throw e}return await r.json()}
+  finally{clearTimeout(t)}
+}
+function show(st,n,max,unc){
+  const cls={on:"dot",off:"dot off",wait:"dot wait"}[st];
+  $("#d1").className=cls;$("#d2").className=cls;
+  if(st=="on"){
+    $("#st1").textContent="Běží";$("#st2").textContent="Server běží · teď je ve městě "+n+" "+(n==1?"člověk":n>=2&&n<=4?"lidé":"lidí");
+    $("#pl").textContent=n;$("#pmax").textContent=" / "+max+" hráčů";$("#bar").style.width=Math.min(100,n/max*100)+"%";
+    $("#upd").textContent="Naposledy zkontrolováno v "+new Date().toLocaleTimeString("cs-CZ")+", samo se to obnovuje.";
+  }else if(st=="off"){
+    $("#st1").textContent="Odpočívá";$("#st2").textContent="Server si zrovna odpočívá";
+    $("#pl").textContent="0";$("#bar").style.width="0%";
+    $("#upd").textContent="Zrovna neběží. Koukli jsme v "+new Date().toLocaleTimeString("cs-CZ")+" a za chvilku to zkusíme znovu.";
+  }else{
+    $("#st1").textContent="Neznámý";$("#st2").textContent=unc?"Stav serveru zatím není nastavený":"Stav serveru se nám teď nepodařilo zjistit";
+    $("#pl").textContent="–";$("#bar").style.width="0%";
+    $("#upd").textContent=unc?"Majitel webu musí doplnit FIVEM_URL nebo FIVEM_JOIN_CODE v souboru .env.":"Nepodařilo se spojit se serverem, zkusíme to za chvilku.";
+  }
+}
+async function status(){
+  let j,api=true;try{j=await jget("/api/status")}catch(e){j={state:"unknown"};api=false}
+  if(j.join){CFG.code=j.join;$$(".jc").forEach(x=>x.textContent=j.join)}
+  show(j.state=="on"?"on":j.state=="off"?"off":"wait",j.n,j.max,j.state=="unconfigured");
+  if(!api){$("#st2").textContent="Web nedostal odpověď od serveru";$("#upd").textContent="Nejde načíst /api/status. Běží nový server.js (npm start) a otevíráš stránku přes něj, ne ze souboru?"}
+}
+status();setInterval(status,CFG.every);
+$$("[data-n]").forEach(el=>{const t=+el.dataset.n,s=performance.now();(function f(now){const p=Math.min(1,(now-s)/1200);el.textContent=Math.round(t*(1-Math.pow(1-p,3))).toLocaleString("cs-CZ");if(p<1)requestAnimationFrame(f)})(s)});
+$("#cp").onclick=async()=>{const b=$("#cp");try{await navigator.clipboard.writeText("https://cfx.re/join/"+CFG.code);b.textContent="Zkopírováno"}catch(e){b.textContent="Označ a zkopíruj ručně"}setTimeout(()=>b.textContent="Kopírovat link",2000)};
+$("#f4").oninput=e=>$("#cnt").textContent=e.target.value.length;
+$("#fm").onsubmit=async e=>{
+  e.preventDefault();const v=i=>$("#f"+i).value.trim(),E={};
+  if(v(1).length<3)E[1]="Přezdívka by měla mít aspoň 3 znaky.";
+  if(!/^[\w.#]{2,32}$/.test(v(2)))E[2]="Zadej Discord jméno, např. marek_cz.";
+  if(!(+v(3)>=15&&+v(3)<=99))E[3]="Na server můžeš od 15 let.";
+  if(v(4).length<80)E[4]="Napiš nám prosím trochu víc, aspoň 80 znaků. Zatím máš "+v(4).length+".";
+  if(!$("#f5").checked)E[5]="Potřebujeme, abys s pravidly souhlasil/a.";
+  [1,2,3,4,5].forEach(i=>$("#e"+i).textContent=E[i]||"");
+  if(Object.keys(E).length){$("#f"+Object.keys(E)[0]).focus();return}
+  try{const r=await api("/api/applications",{method:"POST",body:{nick:v(1),discord:v(2),age:+v(3),story:v(4)}});$("#ref").textContent="NC-"+String(r.id).padStart(5,"0");$("#fm").hidden=true;$("#ok").hidden=false}catch(x){$("#e5").textContent=x.message}
+};
+</script>
+<script>
+(()=>{
+const RM=matchMedia("(prefers-reduced-motion:reduce)").matches,FINE=matchMedia("(pointer:fine)").matches;
+const mk=(id)=>{const d=document.createElement("div");d.id=id;d.setAttribute("aria-hidden","true");document.body.appendChild(d);return d};
+const sp=mk("sp");
+/* scroll: ukazatel + zmenšení hlavičky */
+let tk=0;addEventListener("scroll",()=>{if(tk)return;tk=requestAnimationFrame(()=>{tk=0;const h=document.documentElement,m=h.scrollHeight-innerHeight;sp.style.transform="scaleX("+(m>0?Math.min(1,scrollY/m):0)+")";document.body.classList.toggle("sc",scrollY>30)})},{passive:true});
+if(RM)return;
+/* světlo za kurzorem */
+if(FINE){const cg=mk("cg");let x=innerWidth/2,y=innerHeight/2,tx=x,ty=y;
+addEventListener("pointermove",e=>{tx=e.clientX;ty=e.clientY;cg.classList.add("on")},{passive:true});
+document.addEventListener("pointerleave",()=>cg.classList.remove("on"));
+(function f(){x+=(tx-x)*.12;y+=(ty-y)*.12;cg.style.transform="translate3d("+x+"px,"+y+"px,0)";requestAnimationFrame(f)})()}
+/* karty: světlo + náklon (delegováno, funguje i na dynamický obsah) */
+const T=".card,.stats div,.cm button";
+document.addEventListener("pointermove",e=>{
+  const c=e.target.closest&&e.target.closest(T);if(!c)return;
+  const r=c.getBoundingClientRect(),px=e.clientX-r.left,py=e.clientY-r.top;
+  c.style.setProperty("--mx",px+"px");c.style.setProperty("--my",py+"px");
+  if(FINE&&c.matches("a.card,.bento .card,.grid .card")&&!c.closest("form")){
+    c.classList.add("tilt");
+    c.style.transform="perspective(900px) rotateX("+((.5-py/r.height)*7).toFixed(2)+"deg) rotateY("+((px/r.width-.5)*9).toFixed(2)+"deg) translateY(-4px)";
+  }
+},{passive:true});
+document.addEventListener("pointerout",e=>{const c=e.target.closest&&e.target.closest(".tilt");if(c&&!c.contains(e.relatedTarget)){c.classList.remove("tilt");c.style.transform=""}});
+/* magnetická tlačítka v hrdinovi */
+if(FINE){document.addEventListener("pointermove",e=>{const b=e.target.closest&&e.target.closest(".hero .btn");if(!b)return;const r=b.getBoundingClientRect();b.style.transform="translate("+((e.clientX-r.left-r.width/2)*.18)+"px,"+((e.clientY-r.top-r.height/2)*.3)+"px)"},{passive:true});
+document.addEventListener("pointerout",e=>{const b=e.target.closest&&e.target.closest(".hero .btn");if(b)b.style.transform=""})}
+/* odhalování při scrollu */
+if(!("IntersectionObserver"in window))return;
+const io=new IntersectionObserver(es=>es.forEach(en=>{if(!en.isIntersecting)return;const el=en.target;io.unobserve(el);el.classList.add("in");
+  el.addEventListener("animationend",()=>el.classList.remove("rv","in"),{once:true})}),{threshold:.08,rootMargin:"0px 0px -6% 0px"});
+const SEL=".sec>*,.stats div,.grid>*,.cm>*,.rs,#rl>*,details,.bento>*";
+const arm=root=>{(root.querySelectorAll?root.querySelectorAll(SEL):[]).forEach(el=>{
+  if(el.dataset.rv||el.closest(".hero"))return;el.dataset.rv=1;
+  const i=[...el.parentNode.children].indexOf(el);el.style.setProperty("--d",Math.min(i,8)*.07+"s");el.classList.add("rv");io.observe(el)})};
+arm(document);
+new MutationObserver(m=>m.forEach(r=>r.addedNodes.forEach(n=>n.nodeType===1&&(arm(n),n.matches&&n.matches(SEL)&&arm(n.parentNode)))))
+ .observe(document.querySelector("main"),{childList:true,subtree:true});
+})();
+
+(()=>{
+const RM=matchMedia("(prefers-reduced-motion:reduce)").matches,FINE=matchMedia("(pointer:fine)").matches,H=document.documentElement;
+const $=s=>document.querySelector(s),mk=(t,id,c)=>{const d=document.createElement(t);if(id)d.id=id;if(c)d.className=c;return d};
+/* ---- crosshair ---- */
+if(FINE){
+  const xh=mk("div","xh"),xr=mk("div","xr");xh.setAttribute("aria-hidden","true");xr.setAttribute("aria-hidden","true");
+  xh.innerHTML='<div class="xi"><b class="u"></b><b class="d"></b><b class="l"></b><b class="r"></b></div><i class="dt"></i>';
+  document.body.append(xh,xr);H.classList.add("xh");
+  let x=0,y=0,rx=0,ry=0;
+  const HOV="a,button,summary,label,select,.chip,.card,.cm button,[role=button],input[type=checkbox]";
+  addEventListener("pointermove",e=>{x=e.clientX;y=e.clientY;if(!H.classList.contains("xs")){rx=x;ry=y;H.classList.add("xs")}
+    xh.style.transform="translate3d("+x+"px,"+y+"px,0)";
+    const t=e.target.closest?e.target:null;
+    H.classList.toggle("xt",!!(t&&t.closest("input:not([type=checkbox]),textarea")));
+    H.classList.toggle("xk",!!(t&&t.closest(HOV)));
+    H.classList.toggle("xp",!!(t&&t.closest("a,button,summary,.chip,.cm button,input[type=checkbox],label")))},{passive:true});
+  document.addEventListener("pointerleave",()=>H.classList.remove("xs"));
+  document.addEventListener("pointerenter",()=>H.classList.add("xs"));
+  (function f(){rx+=(x-rx)*(RM?1:.18);ry+=(y-ry)*(RM?1:.18);xr.style.transform="translate3d("+rx+"px,"+ry+"px,0)";requestAnimationFrame(f)})();
+  addEventListener("pointerdown",e=>{H.classList.add("xc");if(RM)return;
+    const r=mk("i",0,"rp");r.style.left=e.clientX+"px";r.style.top=e.clientY+"px";document.body.appendChild(r);setTimeout(()=>r.remove(),750);
+    for(let i=0;i<8;i++){const p=mk("i",0,"pk"),a=Math.PI*2*i/8+Math.random()*.5,d=22+Math.random()*26;
+      p.style.left=e.clientX+"px";p.style.top=e.clientY+"px";p.style.setProperty("--dx",Math.cos(a)*d+"px");p.style.setProperty("--dy",Math.sin(a)*d+"px");document.body.appendChild(p);setTimeout(()=>p.remove(),750)}});
+  addEventListener("pointerup",()=>H.classList.remove("xc"));
+}
+if(RM)return;
+/* ---- sníh (malý) ---- */
+const cv=mk("canvas","snow"),g=cv.getContext("2d");cv.setAttribute("aria-hidden","true");document.body.appendChild(cv);
+let W,Hh,D=Math.min(devicePixelRatio||1,2),fl=[],wind=0,tw=0,col="255,255,255";
+const size=()=>{W=innerWidth;Hh=innerHeight;cv.width=W*D;cv.height=Hh*D;g.setTransform(D,0,0,D,0,0)};size();addEventListener("resize",size);
+const N=Math.round(Math.min(90,Math.max(40,W/16)));
+for(let i=0;i<N;i++)fl.push({x:Math.random()*W,y:Math.random()*Hh,r:.7+Math.random()*1.5,v:.25+Math.random()*.7,p:Math.random()*6.28,a:.35+Math.random()*.5});
+addEventListener("pointermove",e=>{tw=(e.clientX/W-.5)*1.2},{passive:true});
+setInterval(()=>{const m=getComputedStyle(document.body).backgroundColor.match(/\d+/g)||[0,0,0];col=(+m[0]+ +m[1]+ +m[2])/3>150?"255,140,40":"255,255,255"},2000);
+let t=0,run=true;document.addEventListener("visibilitychange",()=>{run=!document.hidden;if(run)requestAnimationFrame(sn)});
+function sn(){if(!run)return;t+=.01;wind+=(tw-wind)*.03;g.clearRect(0,0,W,Hh);
+  for(const f of fl){f.y+=f.v;f.x+=Math.sin(t*2+f.p)*.35+wind*(.4+f.r*.3);
+    if(f.y>Hh+4){f.y=-4;f.x=Math.random()*W}if(f.x>W+4)f.x=-4;if(f.x<-4)f.x=W+4;
+    g.beginPath();g.arc(f.x,f.y,f.r,0,6.283);g.fillStyle="rgba("+col+","+f.a+")";g.fill()}
+  requestAnimationFrame(sn)}
+sn();
+/* ---- orb v hrdinovi ---- */
+const hw=$(".hero .wrap");if(hw){const o=mk("div",0,"orb");o.setAttribute("aria-hidden","true");o.innerHTML='<i class="rg r3"></i><i class="rg r2"></i><i class="co"></i><i class="rg r1"></i>';hw.appendChild(o)}
+/* ---- paralaxa pozadí + scroll hrdiny ---- */
+const aur=$(".aur"),bub=$(".bubs");
+addEventListener("pointermove",e=>{const px=e.clientX/innerWidth-.5,py=e.clientY/innerHeight-.5;
+  if(aur)aur.style.transform="translate3d("+px*-50+"px,"+py*-40+"px,0)";if(bub)bub.style.transform="translate3d("+px*30+"px,"+py*24+"px,0)"},{passive:true});
+let sk=0;addEventListener("scroll",()=>{if(sk)return;sk=requestAnimationFrame(()=>{sk=0;H.style.setProperty("--sy",Math.min(scrollY,760))})},{passive:true});
+/* ---- scramble nadpisů ---- */
+const CH="ABCDEFGHJKLMNPRSTUVZabcdefghkmnoprstuvz0123456789#%&*+";
+const scr=el=>{const s=el.dataset.t||(el.dataset.t=el.textContent),n=s.length,t0=performance.now(),dur=650+n*14;
+  (function f(now){const p=Math.min(1,(now-t0)/dur),k=Math.floor(p*n);
+    el.textContent=s.split("").map((c,i)=>i<k||c===" "||/[.,!?:–-]/.test(c)?c:CH[Math.random()*CH.length|0]).join("");
+    if(p<1)requestAnimationFrame(f);else el.textContent=s})(t0)};
+if("IntersectionObserver"in window){
+  const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting){io.unobserve(en.target);en.target.classList.add("sc2");scr(en.target)}}),{threshold:.6});
+  document.querySelectorAll("h2.t").forEach(h=>io.observe(h));
+}
+/* ---- logo: hover scramble ---- */
+const lt=$("#lt");if(lt)lt.parentNode.addEventListener("pointerenter",()=>{if(lt.textContent.length<40)scr(lt)});
+})();
+
+</script>
+</body>
+</html>
